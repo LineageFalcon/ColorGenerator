@@ -21,8 +21,8 @@
          <button> /// </button>
         
         <div id="controls">
-                <button onclick="white()"> Weiß </button>
-                <button onclick="black()"> Schwarz </button>
+                <button id="btnWhite" onclick="ColorMode('white')"> Weiß </button>
+                <button id="btnBlack" onclick="ColorMode('#272727')"> Schwarz </button>
         </div>
         
 <!--        <div class="inputForm">
@@ -46,7 +46,7 @@
                 <button class="delete" onclick="delPnl(0)">-</button>
             </div>
             <section class="btnColorGen">
-                <button onclick="RanColorGen('.pnl-0')"> Generieren </button>
+                <button onclick="mainColor('.pnl-0')"> Generieren </button>
                 <p> Color </p>
             </section>
             <div id="containerCTwo">
