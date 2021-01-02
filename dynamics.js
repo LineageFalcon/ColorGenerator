@@ -67,7 +67,37 @@ class themeUI {
     }
 
     static calcWidth() {
-        $('.colorPnl, .addPnl').css('width', 100 / (colorPnl.elmtCount + 1) + "%");
+        let colorPnl = document.getElementsByClassName('colorPnl');
+        let addPnl = document.getElementsByClassName('addPnl');
+        for(let i = colorPnl.length - 1; i >= 0; i--) {
+            colorPnl[i].style.width = 100 / (colorPnlObj.elmtCount + 1) + "%";
+        }
+        addPnl[0].style.width = 100 / (colorPnlObj.elmtCount + 1) + "%";
+    }
+}
+
+class colorPanel {
+    constructor() {
+        this._colorPanelList = [];
+    }
+
+    static createPnl() {
+        let pnlArray = [];
+        let colorPanel = {
+            delBtn:  document.createElement('button'), 
+            colorBtn: document.createElement('button'), 
+            colorBtnSection: document.createElement('section'), 
+            colorBtnSectionP: document.createElement('p'),
+            container: document.createElement('div')
+        }
+        
+        
+       colorPanel.container.classList.addClass('colorPnl', 'pnl-' + pnlArray.length);
+       console.log(colorPanel.container);
+
+        // for(let i = 5; i >= 0; i--) {
+        //     pnlArray[i] = document.createElement('div');
+        // }
     }
 }
 
@@ -101,20 +131,7 @@ function hex(x) { // other function for rgb to hex just with one value yet
 
 //---------------[End of ColorGenCode]---------------
 
-// function colorMode(color) {
-//     const controlColor = color; //'#272727'
-//     $('button').css('color', controlColor);
-//     $('section p').css('color', controlColor);
-//     $('.cTwo').css('color', controlColor);
-//     $('.cTwo').css('border-color', controlColor);
-//     $('.btnColorGen').css('border-color', controlColor);
-//     $('button:first-child').css('border-color', controlColor);
-//     $('.addBtn').css('border-color', controlColor);
-// }
-
-//---------------[End of ColorSetUp]---------------
-
-let colorPnl = {
+let colorPnlObj = {
     get container() {
        return '<div class="colorPnl pnl-' + this.elmtCount + '">' + this.colorOneElmt + this.colorTwoElmt + this.btnDel + this.sectionControl + this.sectionSign + '\n</div>'; 
     },
@@ -140,21 +157,17 @@ let colorPnl = {
         return '\n\t<div id="containerCTwo">\n\t\t' + '<p class="cTwo"> Color 2 </p>' + '\n\t</div>';
     }
 }
-
-function calcWidth() {
-    $('.colorPnl, .addPnl').css('width', 100 / (colorPnl.elmtCount + 1) + "%");
-}
     
 function addPnl() {
     if ($('.external').children().is('.colorPnl')) {
-        $('.colorPnl:nth-child(' + (colorPnl.elmtCount + ')')).after(colorPnl.container);
+        $('.colorPnl:nth-child(' + (colorPnlObj.elmtCount + ')')).after(colorPnlObj.container);
     }
     else {
-        $('.addPnl').before(colorPnl.container);
+        $('.addPnl').before(colorPnlObj.container);
     }
-    calcWidth();
-    colorMode('white');
-    $('.pnl-' + (colorPnl.elmtCount - 1) + ' .btnColorGen button').click();
+    themeUI.calcWidth();
+    themeUI.colorMode();
+    $('.pnl-' + (colorPnlObj.elmtCount - 1) + ' .btnColorGen button').click();
 }
 
 function delPnl(delPnlID) {
@@ -167,11 +180,11 @@ function delPnl(delPnlID) {
         targetPnl.find('.btnColorGen button').attr('onclick', 'mainColor(".pnl-' + indexer + '")');
         indexer++;
     })
-    calcWidth();
+    themeUI.calcWidth();
 }
 
 // Shorthand for $( document ).ready()
 $(function() {
-    $('.colorPnl, .addPnl').css('width', 100 / (colorPnl.elmtCount + 1) + '%')
+   themeUI.calcWidth();
     mainColor('.pnl-0');
 });
