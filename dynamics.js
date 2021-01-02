@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     new colorConvert();
     new themeUI();
+    new colorPanel();
 });
 
 class themeUI {
@@ -81,23 +82,48 @@ class colorPanel {
         this._colorPanelList = [];
     }
 
+    //#region Setter
+    static setColorPanelList(list) {
+        this._colorPanelList = list;
+    }
+
+    static getColorPanelList() {
+        return this._colorPanelList;
+    }
+    //#endregion Setter
+
     static createPnl() {
         let pnlArray = [];
-        let colorPanel = {
+        let colorPanelEl = {
             delBtn:  document.createElement('button'), 
             colorBtn: document.createElement('button'), 
             colorBtnSection: document.createElement('section'), 
             colorBtnSectionP: document.createElement('p'),
-            container: document.createElement('div')
+            container: document.createElement('div'),
+            colorOneElem: document.createElement('div'),
+            colorTwoElem: document.createElement('div'),
+            delContainer: document.createElement('div'),
+            cTwoContainer: document.createElement('div')
         }
         
-        
-       colorPanel.container.classList.addClass('colorPnl', 'pnl-' + pnlArray.length);
-       console.log(colorPanel.container);
+        let PnlClasses = {
+            containerClass: ['colorPnl', 'pnl-' + pnlArray.length],
+            colorWrapperClass: ['colorOne', 'colorTwo'],
+            delBtnClass: ['delete-container', 'delete'],
+            sectionControlClass: 'btnColorGen',
+            sectionSignClass: ['containerCTwo', 'cTwo']
+        }
+
+
+        colorPanelEl.container.classList.add(...PnlClasses.containerClass);
+        colorPanelEl.colorOneElem.after(colorPanelEl.container);
+        console.log(colorPanelEl);
 
         // for(let i = 5; i >= 0; i--) {
         //     pnlArray[i] = document.createElement('div');
         // }
+
+        colorPanel.setColorPanelList(pnlArray);
     }
 }
 
