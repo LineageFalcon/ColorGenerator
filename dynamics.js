@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     new colorConvert();
+    new themeUI();
 });
 class colorConvert {
     constructor() {
@@ -108,7 +109,17 @@ class colorConvert {
 
 class themeUI {
     constructor() {
+        //buttons eventListener hinzufügen
+        //4 buttons
+        this.setControls();
+    }
 
+    setControls() {
+        let btnWhite = document.getElementById('btnWhite'),
+            btnBlack = document.getElementById('btnBlack');
+
+        btnWhite.addEventListener('click', () => {colorMode('white')});
+        btnBlack.addEventListener('click', () => {colorMode('#272727')});
     }
 }
 
@@ -142,7 +153,7 @@ function hex(x) { // other function for rgb to hex just with one value yet
 
 //---------------[End of ColorGenCode]---------------
 
-function ColorMode(color) {
+function colorMode(color) {
     const controlColor = color; //'#272727'
     $('button').css('color', controlColor);
     $('section p').css('color', controlColor);
@@ -194,7 +205,7 @@ function addPnl() {
         $('.addPnl').before(colorPnl.container);
     }
     calcWidth();
-    ColorMode('white');
+    colorMode('white');
     $('.pnl-' + (colorPnl.elmtCount - 1) + ' .btnColorGen button').click();
 }
 
@@ -215,5 +226,5 @@ function delPnl(delPnlID) {
 $(function() {
     $('.colorPnl, .addPnl').css('width', 100 / (colorPnl.elmtCount + 1) + '%')
     mainColor('.pnl-0');
-    ColorMode('white');
+    colorMode('white');
 });
