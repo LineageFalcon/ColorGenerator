@@ -28,6 +28,10 @@ button:first-child {
     border-bottom: 3px solid white;
 }
 
+button:focus {
+    outline: none;
+}
+
 p {
     padding: .5em;
     margin: 0;
