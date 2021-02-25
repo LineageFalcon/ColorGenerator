@@ -168,7 +168,7 @@ section.btnColorGen {
     padding: .5em;
 }
 
-div#containerCTwo {
+div.containerCTwo {
     justify-content: center;
     text-transform: uppercase;
 }
@@ -179,7 +179,8 @@ div#containerCTwo {
     padding: .5em;
 }
 
-button.addBtn {
+button.addPnl {
+    display: block;
     z-index: 5;
     border: 1px solid black;
     border-radius: 50%;
@@ -188,7 +189,7 @@ button.addBtn {
     text-align: center;
 }
 
-button.delete {
+button.delPnl {
     align-self:  flex-end;
     border: 1px solid black;
     border-radius: 50%;
@@ -196,7 +197,7 @@ button.delete {
     width: 55px;
     text-align: center;
     align-self: flex-end;
-    margin-right: 25px;
+    margin-right: 50px;
     margin-top: 50px;
 }
 

@@ -9,7 +9,6 @@
 
     <title>Color Generator</title>
 
-    <script src="jquery-3.4.1.min.js"></script>
     <script src="dynamics.js"></script>
     <script src="colorConvert.js"></script>
 
@@ -17,12 +16,12 @@
 	<body>
 
     <header class="header">
-        <a href="FlexBox.html">Color Gen v 1.0</a>
+        <a href="FlexBox.html">Color Gen v 1.1</a>
 
         <button> /// </button>
         
         <div id="controls">
-                <button id="btnWhite"> darkmode </button>
+                <button class="toggleColorMode"> darkmode </button>
         </div>
         
 <!--<div class="inputForm">
@@ -35,32 +34,13 @@
         
     <div class="container">
     <div class="external">
-
-        <div class="colorPnl pnl-0">
-
-            <div class="colorOne"></div>
-
-            <div class="colorTwo"></div>
-
-            <div class="delete-container">
-                <button class="delete" onclick="delPnl(0)">-</button>
-            </div>
-            <section class="btnColorGen">
-                <button onclick="mainColor('.pnl-0')"> Generieren </button>
-                <p> Color </p>
-            </section>
-            <div id="containerCTwo">
-                <p class="cTwo"> Color 2 </p>
-            </div>
-        </div>
-
         <div class="addPnl">
 
             <div class="ColorPnl"></div>
 
             <div class="bgColorPnl"></div>
 
-            <button class="addBtn" onclick="addPnl()">+</button>
+            <button class="addPnl">+</button>
 
         </div>
     </div>
