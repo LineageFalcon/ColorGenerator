@@ -101,4 +101,9 @@ class colorConvert {
 
         return color;
     }
+
+    static hex(x) { //unknown method --> I dont know if this is needed but I left it here for the sake of the codes integrity
+        let hexD = colorConvert.getHexChars();
+        return isNaN(x) ? "00" : hexD[(x - x % 16) / 16] + hexD[x % 16];
+    }
 }

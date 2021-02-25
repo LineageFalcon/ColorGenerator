@@ -1,17 +1,19 @@
 document.addEventListener("DOMContentLoaded", function() {
     new colorConvert();
-    new themeUI();
     new colorPanel();
+
+    colorPanel.createPnl();
+    new themeUI();
 });
 
-class themeUI {
+class themeUI { // need to be reworked to take instance parameters
     constructor() {
-        this._colorModeUIElements = [3];
+        this._colorModeUIElements = [4];
         //buttons eventListener hinzufügen
         //2 buttons
-        this.bindControls();
-        themeUI.loadUIElements();
 
+        themeUI.bindControls();
+        themeUI.loadUIElements();
         themeUI.main();
     }
 
@@ -26,26 +28,70 @@ class themeUI {
     //#endregion Setter
 
     static loadUIElements() {
-        let elements = [3];
+        let elements = [4];
         elements[0] = document.querySelectorAll('button');
         elements[1] = document.getElementsByClassName('cTwo');
         elements[2] = document.querySelector('section').querySelector('p');
-        elements[3] = document.getElementsByClassName('btnColorGen')[0];
+        elements[3] = document.getElementsByClassName('btnColorGen');
+
 
         themeUI.setColorModeUIElements(elements);
     }
 
-    bindControls() {
-        let btnWhite = document.getElementById('btnWhite');
+    static bindControls() {
+        let btnArray = Array.prototype.slice.call(document.querySelectorAll('button'));
 
-        btnWhite.addEventListener('click', () => {
+        btnArray.forEach((arrayItem) => {
+			let btnClass = arrayItem.className;
+
+			switch(btnClass) {
+				case 'toggleColorMode': 
+				        themeUI.toggleColorMode(arrayItem);
+					break;
+				case 'addPnl': 
+				        themeUI.addPnl(arrayItem);
+					break;
+				case 'delPnl':
+				        themeUI.delPnl(arrayItem);
+					break;
+				case 'genColor':
+				        themeUI.genColor(arrayItem);
+					break;
+			}
+		});
+    }
+
+    static toggleColorMode(arrayItem) {
+        arrayItem.addEventListener('click', () => {
             themeUI.colorMode();
-            if(btnWhite.classList.contains('white')) {
-                btnWhite.textContent = "lightmode";
+            if(arrayItem.classList.contains('white')) {
+                arrayItem.textContent = "lightmode";
             } else {
-                btnWhite.textContent = "darkmode";
+                arrayItem.textContent = "darkmode";
             }
         });
+    }
+
+    static addPnl(arrayItem) {
+        arrayItem.addEventListener('click', () => {
+            colorPanel.createPnl();
+            themeUI.bindControls();
+		});
+    }
+
+    static delPnl(arrayItem) {
+        arrayItem.addEventListener('click', () => {
+            let pnlContainer = arrayItem.parentNode.parentNode;
+            pnlContainer.remove();
+            themeUI.calcWidth();
+		});
+    }
+
+    static genColor(arrayItem) {
+        arrayItem.addEventListener('click', () => {
+            let pnlContainer = arrayItem.parentNode.parentNode;
+            themeUI.mainColor(pnlContainer);
+		});
     }
 
     static main() {
@@ -55,9 +101,9 @@ class themeUI {
     static colorMode() {
         let elements = themeUI.getColorModeUIElements();//should check item length instead of solid numbers what dimension the array has !
         for (let i = elements.length-1; i >= 0; i--) {
-            if(i == 2 || i == 3) {
+            if(i == 2) {
                 elements[i].classList.toggle('white');
-            } else if(i == 0) {
+            } else if(i == 0 || i == 1 || i == 3) {
                 for (let k = elements[i].length; k > 0; k--) {
                     elements[i][k-1].classList.toggle('white');
                 }
@@ -67,24 +113,44 @@ class themeUI {
         }
     }
 
+    static mainColor(pnlID) {//handle objects --> which are create with createElement and stored in an array !
+        let ColorOne = colorConvert.ranColorGen();
+        let ColorTwo;
+        let ColorTwoTxt;
+        
+        ColorTwo = colorConvert.changeLightness(colorConvert.hexToRgb(ColorOne), 50);
+        ColorTwoTxt =colorConvert.rgbToHex(ColorTwo);
+        
+        themeUI.distributer(ColorOne, ColorTwoTxt, pnlID);
+    }
+
+    static distributer(ColorOne, ColorTwoTxt, PnlID) {
+    
+            PnlID.getElementsByClassName('colorOne')[0].style.backgroundColor = ColorOne;
+            PnlID.getElementsByClassName('colorTwo')[0].style.backgroundColor = ColorTwoTxt;
+    
+            PnlID.getElementsByClassName('btnColorGen')[0].querySelector('p').textContent = ColorOne;
+            PnlID.getElementsByClassName('containerCTwo')[0].querySelector('p').textContent = ColorTwoTxt;
+    }
+
     static calcWidth() {
         let colorPnl = document.getElementsByClassName('colorPnl');
         let addPnl = document.getElementsByClassName('addPnl');
         for(let i = colorPnl.length - 1; i >= 0; i--) {
-            colorPnl[i].style.width = 100 / (colorPnlObj.elmtCount + 1) + "%";
+            colorPnl[i].style.width = 100 / (colorPnl.length + 1) + "%";
         }
-        addPnl[0].style.width = 100 / (colorPnlObj.elmtCount + 1) + "%";
+        addPnl[0].style.width = 100 / (colorPnl.length + 1) + "%";
     }
 }
 
 class colorPanel {
     constructor() {
-        this._colorPanelList = [];
+        this._colorPanelList = [null];
     }
 
     //#region Setter
-    static setColorPanelList(list) {
-        this._colorPanelList = list;
+    static setColorPanelList(list, i) {
+        this._colorPanelList[i] = list;
     }
 
     static getColorPanelList() {
@@ -92,13 +158,14 @@ class colorPanel {
     }
     //#endregion Setter
 
-    static createPnl() {
-        let pnlArray = [];
-        let colorPanelEl = {
+    static createPnl() { //calling from instance (give instance as parameter)(maybe)
+        let pnlList = colorPanel.getColorPanelList();
+        let colorPanelEl = {//first layer
             delBtn:  document.createElement('button'), 
             colorBtn: document.createElement('button'), 
             colorBtnSection: document.createElement('section'), 
             colorBtnSectionP: document.createElement('p'),
+            cTwoP: document.createElement('p'),
             container: document.createElement('div'),
             colorOneElem: document.createElement('div'),
             colorTwoElem: document.createElement('div'),
@@ -107,110 +174,47 @@ class colorPanel {
         }
         
         let PnlClasses = {
-            containerClass: ['colorPnl', 'pnl-' + pnlArray.length],
+            containerClass: 'colorPnl', 
             colorWrapperClass: ['colorOne', 'colorTwo'],
-            delBtnClass: ['delete-container', 'delete'],
-            sectionControlClass: 'btnColorGen',
+            delBtnClass: ['delete-container', 'delPnl'],
+            sectionControlClass: ['btnColorGen', 'genColor'],
             sectionSignClass: ['containerCTwo', 'cTwo']
         }
 
+        colorPanelEl.container.append(colorPanelEl.colorOneElem);
+        colorPanelEl.container.append(colorPanelEl.colorTwoElem);
+        colorPanelEl.container.append(colorPanelEl.delContainer);
+            colorPanelEl.delContainer.append(colorPanelEl.delBtn);
+                colorPanelEl.delBtn.textContent = '-';
+        colorPanelEl.container.append(colorPanelEl.colorBtnSection);
+            colorPanelEl.colorBtnSection.append(colorPanelEl.colorBtn);
+                colorPanelEl.colorBtn.textContent = 'Generieren';
+            colorPanelEl.colorBtnSection.append(colorPanelEl.colorBtnSectionP);
+        colorPanelEl.container.append(colorPanelEl.cTwoContainer);
+            colorPanelEl.cTwoContainer.append(colorPanelEl.cTwoP);
 
-        colorPanelEl.container.classList.add(...PnlClasses.containerClass);
-        colorPanelEl.colorOneElem.after(colorPanelEl.container);
-        console.log(colorPanelEl);
+        console.log(colorPanelEl.container);
 
-        // for(let i = 5; i >= 0; i--) {
-        //     pnlArray[i] = document.createElement('div');
-        // }
+        colorPanelEl.container.classList.add(PnlClasses.containerClass);
+        colorPanelEl.colorOneElem.classList.add(PnlClasses.colorWrapperClass[0]);
+        colorPanelEl.colorTwoElem.classList.add(PnlClasses.colorWrapperClass[1]);
+        colorPanelEl.delContainer.classList.add(PnlClasses.delBtnClass[0]);
+            colorPanelEl.delBtn.classList.add(PnlClasses.delBtnClass[1]);
+        colorPanelEl.colorBtnSection.classList.add(PnlClasses.sectionControlClass[0]);
+            colorPanelEl.colorBtn.classList.add(PnlClasses.sectionControlClass[1]);
+        colorPanelEl.cTwoContainer.classList.add(PnlClasses.sectionSignClass[0]);
+            colorPanelEl.cTwoP.classList.add(PnlClasses.sectionSignClass[1]);
 
-        colorPanel.setColorPanelList(pnlArray);
+        let node = document.getElementsByClassName('addPnl')[0];
+        node.insertAdjacentElement( 'beforebegin', colorPanelEl.container);
+
+        themeUI.calcWidth();
+        themeUI.mainColor(colorPanelEl.container);
     }
 }
 
-function mainColor(pnlID) {//handle objects --> which are create with createElement and stored in an array !
-    let ColorOne = colorConvert.ranColorGen();
-    let ColorTwo;
-    let ColorTwoTxt;
-    
-    ColorTwo = colorConvert.changeLightness(colorConvert.hexToRgb(ColorOne), 50);
-    ColorTwoTxt =colorConvert.rgbToHex(ColorTwo);
-    
-    distributer(ColorOne, ColorTwoTxt, pnlID);
-}
+class controller {
+    constructor() {
 
-function distributer(ColorOne, ColorTwoTxt, PnlID) {
-    $(PnlID).each(function() {
-        let selector = $(this).children();
-
-        selector.filter('.colorOne').css('background-color', ColorOne);
-        selector.filter('.colorTwo').css('background-color', ColorTwoTxt);
-
-        selector.filter('section').find('p').text(ColorOne);
-        selector.filter('#containerCTwo').find('p').text(ColorTwoTxt);
-    });
-}
-
-function hex(x) { // other function for rgb to hex just with one value yet
-    let hexD = colorConvert.getHexChars();
-    return isNaN(x) ? "00" : hexD[(x - x % 16) / 16] + hexD[x % 16];
-}
-
-//---------------[End of ColorGenCode]---------------
-
-let colorPnlObj = {
-    get container() {
-       return '<div class="colorPnl pnl-' + this.elmtCount + '">' + this.colorOneElmt + this.colorTwoElmt + this.btnDel + this.sectionControl + this.sectionSign + '\n</div>'; 
-    },
-    get elmtCount() {
-        return $('.colorPnl').length;
-    },
-    get colorOneElmt() {
-        return '\n\t<div class="colorOne"></div>';   
-    },
-    get colorTwoElmt() {
-        return '\n\t<div class="colorTwo"></div>';   
-    },
-    get btnDel() {
-        return '\n\t\t<div class="delete-container">\n\t\t\t' + '<button class="delete" onclick="delPnl(' + this.elmtCount + ')">-</button>\n' + '\t\t</div>'  
-    },
-    get sectionControl() {
-        return '\n\t<section class="btnColorGen">' + this.btnColorGen + '\n\t\t<p> Color </p>' + '\n\t</section>';    
-    },
-    get btnColorGen() {
-        return '\n\t\t<button onclick="mainColor(\'.pnl-' + this.elmtCount + '\')"> Generieren </button>';
-    },
-    get sectionSign() {
-        return '\n\t<div id="containerCTwo">\n\t\t' + '<p class="cTwo"> Color 2 </p>' + '\n\t</div>';
     }
 }
-    
-function addPnl() {
-    if ($('.external').children().is('.colorPnl')) {
-        $('.colorPnl:nth-child(' + (colorPnlObj.elmtCount + ')')).after(colorPnlObj.container);
-    }
-    else {
-        $('.addPnl').before(colorPnlObj.container);
-    }
-    themeUI.calcWidth();
-    themeUI.colorMode();
-    $('.pnl-' + (colorPnlObj.elmtCount - 1) + ' .btnColorGen button').click();
-}
-
-function delPnl(delPnlID) {
-    let indexer = 0;
-    $('.colorPnl').remove('.pnl-' + delPnlID + '');
-    $('.colorPnl').each(function() {
-        let targetPnl = $(this);
-        targetPnl.removeClass('pnl-' + (indexer + 1) +'').addClass('pnl-' + indexer + '')
-        targetPnl.find('.delete').attr('onclick', 'delPnl(' + indexer + ')');
-        targetPnl.find('.btnColorGen button').attr('onclick', 'mainColor(".pnl-' + indexer + '")');
-        indexer++;
-    })
-    themeUI.calcWidth();
-}
-
-// Shorthand for $( document ).ready()
-$(function() {
-   themeUI.calcWidth();
-    mainColor('.pnl-0');
-});
