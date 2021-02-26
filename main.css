@@ -1,0 +1,207 @@
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-flow: row nowrap;
+    margin: 0!important;
+    padding: 0!important;
+    font-family: arial, monospace;
+    font-size: 1.5em;
+}
+
+button {
+    display: block;
+    background:  transparent;
+    padding: 10px;
+    border: none;
+    font-size: 1em;
+    z-index: 100;
+    color: white;;
+}
+
+button:hover {
+    background-color: rgba(0, 0, 0, 0.30);
+    color: black;
+    cursor: pointer;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:disabled {
+    color: gray;
+}
+
+button:disabled:hover {
+    background: transparent;
+    cursor: not-allowed;
+}
+
+p {
+    padding: .5em;
+    margin: 0;
+    color: white;
+}
+
+p:hover {
+    background-color: rgba(0, 0, 0, 0.30);
+    cursor: pointer;
+    color: black;
+}
+
+div {
+    display: flex;
+    position: relative;
+    height: 33.33%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column wrap;
+}
+
+.header {
+    display: flex;
+    flex-flow: row nowrap;
+    position: absolute;
+    background: rgba( 255, 255, 255, 0.25 );
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+    border-bottom: 1px solid rgba( 255, 255, 255, 0.18 );
+    width: 100%;
+    height: auto;
+    z-index: 1;
+}
+
+.header a {
+    display: block;
+    flex-grow: 1;
+    align-self: center;
+    z-index: 12;
+    height: 100%;
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+div#controls {
+    flex-flow: row nowrap;
+    overflow: hidden;
+    z-index: 10;
+    justify-self: flex-end;
+    align-items: center;
+    height: auto;
+    width: auto;
+    background-color: transparent;
+}
+
+.container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-flow: row wrap;
+    position: absolute;
+}
+
+.subContainer {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-flow: column wrap;
+    justify-self: flex-end;
+    position: relative;
+}
+
+.colorPnl, .addPnl {
+    display: flex;
+    height: 100%;
+    width: 50%;
+    position: relative;
+    align-content: center;
+    justify-content: space-around;
+}
+
+div.colorOne, .ColorPnl {
+    display: block;
+    top: 0;
+    height: 90%;
+    position: absolute;
+    z-index: -1;
+    background-color: darkgrey;
+    border-bottom-right-radius: 125px;
+    border-bottom-left-radius: 125px;
+}
+
+.colorPnl p, .addBtn, .delete, .btnColorGen button {
+    background: rgba( 255, 255, 255, 0.25 );
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+}
+
+.colorPnl p:hover {
+    color:black;
+    background: rgba(180, 180, 180, 0.25);
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+}
+
+div.colorTwo, .bgColorPnl {
+    display: block;
+    height: 100%;
+    position: absolute;
+    z-index: -2;
+    background-color: grey;
+}
+
+.delete-container {
+    display: flex;
+    height: auto;
+    align-content: flex-end;
+    justify-content: flex-start;
+}
+
+section.btnColorGen {
+    overflow: hidden;
+    display: flex;
+    border: 1px solid white;
+    border-radius: 15px;
+    flex-flow: column nowrap;
+    text-align: center;
+}
+
+.btnColorGen button:first-child {
+    border-bottom: 1px solid white;
+}
+
+div.containerCTwo {
+    justify-content: center;
+    text-transform: uppercase;
+}
+
+.cTwo {
+    border: 1px solid white;
+    border-radius: 15px;
+    padding: .5em;
+}
+
+button.addPnl {
+    display: block;
+    z-index: 5;
+    border: 1px solid white;
+    border-radius: 50%;
+    height: 65px;
+    width: 65px;
+    text-align: center;
+}
+
+button.delPnl {
+    align-self:  flex-end;
+    border: 1px solid white;
+    border-radius: 50%;
+    height: 55px;
+    width: 55px;
+    text-align: center;
+    align-self: flex-end;
+    margin-right: 50px;
+    margin-top: 50px;
+}
