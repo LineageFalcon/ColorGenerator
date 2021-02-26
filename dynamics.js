@@ -1,19 +1,7 @@
-document.addEventListener("DOMContentLoaded", function() {
-    new colorConvert();
-    new colorPanel();
-
-    colorPanel.createPnl();
-    new themeUI();
-});
-
-class themeUI { // need to be reworked to take instance parameters
+class themeUI { // viewModel
     constructor() {
         this._colorModeUIElements = [4];
-        //buttons eventListener hinzufügen
-        //2 buttons
 
-        themeUI.bindControls();
-        themeUI.loadUIElements();
         themeUI.main();
     }
 
@@ -27,30 +15,31 @@ class themeUI { // need to be reworked to take instance parameters
     }
     //#endregion Setter
 
-    static loadUIElements() {
-        let elements = [4];
-        elements[0] = document.querySelectorAll('button');
-        elements[1] = document.getElementsByClassName('cTwo');
-        elements[2] = document.querySelector('section').querySelector('p');
-        elements[3] = document.getElementsByClassName('btnColorGen');
+    static bindMenuButtons() {
+        let btnArray = Array.prototype.slice.call(document.querySelectorAll('.menuBtn'));
 
+        btnArray.forEach((arrayItem) => {
+            let btnClass = arrayItem.className;
+            console.log(btnClass);
 
-        themeUI.setColorModeUIElements(elements);
+			switch(btnClass) {
+				case 'toggleColorMode menuBtn': 
+				        themeUI.toggleColorMode(arrayItem);
+					break;
+				case 'addPnl menuBtn': 
+				        themeUI.addPnl(arrayItem);
+					break;
+			}
+		});
     }
 
-    static bindControls() {
-        let btnArray = Array.prototype.slice.call(document.querySelectorAll('button'));
+    static bindPanelButtons(panel) {
+        let btnArray = Array.prototype.slice.call(panel.querySelectorAll('button'));
 
         btnArray.forEach((arrayItem) => {
 			let btnClass = arrayItem.className;
 
 			switch(btnClass) {
-				case 'toggleColorMode': 
-				        themeUI.toggleColorMode(arrayItem);
-					break;
-				case 'addPnl': 
-				        themeUI.addPnl(arrayItem);
-					break;
 				case 'delPnl':
 				        themeUI.delPnl(arrayItem);
 					break;
@@ -75,7 +64,6 @@ class themeUI { // need to be reworked to take instance parameters
     static addPnl(arrayItem) {
         arrayItem.addEventListener('click', () => {
             colorPanel.createPnl();
-            themeUI.bindControls();
 		});
     }
 
@@ -91,46 +79,47 @@ class themeUI { // need to be reworked to take instance parameters
         arrayItem.addEventListener('click', () => {
             let pnlContainer = arrayItem.parentNode.parentNode;
             themeUI.mainColor(pnlContainer);
+            console.log('Cry');
 		});
     }
 
     static main() {
-        themeUI.colorMode();
+        themeUI.bindMenuButtons();
+        colorPanel.createPnl();
     }
 
     static colorMode() {
-        let elements = themeUI.getColorModeUIElements();//should check item length instead of solid numbers what dimension the array has !
-        for (let i = elements.length-1; i >= 0; i--) {
+        let UIElements = themeUI.getColorModeUIElements();//should check item length instead of solid numbers what dimension the array has !
+        for (let i = UIElements.length-1; i >= 0; i--) {
             if(i == 2) {
-                elements[i].classList.toggle('white');
+                UIElements[i].classList.toggle('white');
             } else if(i == 0 || i == 1 || i == 3) {
-                for (let k = elements[i].length; k > 0; k--) {
-                    elements[i][k-1].classList.toggle('white');
+                for (let k = UIElements[i].length; k > 0; k--) {
+                    UIElements[i][k-1].classList.toggle('white');
                 }
             } else {
-                elements[i][0].classList.toggle('white');
+                UIElements[i][0].classList.toggle('white');
             }
         }
     }
 
-    static mainColor(pnlID) {//handle objects --> which are create with createElement and stored in an array !
+    static mainColor(panel) {
         let ColorOne = colorConvert.ranColorGen();
         let ColorTwo;
         let ColorTwoTxt;
         
         ColorTwo = colorConvert.changeLightness(colorConvert.hexToRgb(ColorOne), 50);
-        ColorTwoTxt =colorConvert.rgbToHex(ColorTwo);
+        ColorTwoTxt = colorConvert.rgbToHex(ColorTwo);
         
-        themeUI.distributer(ColorOne, ColorTwoTxt, pnlID);
+        themeUI.distributer(ColorOne, ColorTwoTxt, panel);
     }
 
-    static distributer(ColorOne, ColorTwoTxt, PnlID) {
+    static distributer(ColorOne, ColorTwoTxt, panel) {
+            panel.getElementsByClassName('colorOne')[0].style.backgroundColor = ColorOne;
+            panel.getElementsByClassName('colorTwo')[0].style.backgroundColor = ColorTwoTxt;
     
-            PnlID.getElementsByClassName('colorOne')[0].style.backgroundColor = ColorOne;
-            PnlID.getElementsByClassName('colorTwo')[0].style.backgroundColor = ColorTwoTxt;
-    
-            PnlID.getElementsByClassName('btnColorGen')[0].querySelector('p').textContent = ColorOne;
-            PnlID.getElementsByClassName('containerCTwo')[0].querySelector('p').textContent = ColorTwoTxt;
+            panel.getElementsByClassName('btnColorGen')[0].querySelector('p').textContent = ColorOne;
+            panel.getElementsByClassName('containerCTwo')[0].querySelector('p').textContent = ColorTwoTxt;
     }
 
     static calcWidth() {
@@ -143,7 +132,7 @@ class themeUI { // need to be reworked to take instance parameters
     }
 }
 
-class colorPanel {
+class colorPanel {//view
     constructor() {
         this._colorPanelList = [null];
     }
@@ -159,7 +148,6 @@ class colorPanel {
     //#endregion Setter
 
     static createPnl() { //calling from instance (give instance as parameter)(maybe)
-        let pnlList = colorPanel.getColorPanelList();
         let colorPanelEl = {//first layer
             delBtn:  document.createElement('button'), 
             colorBtn: document.createElement('button'), 
@@ -203,18 +191,13 @@ class colorPanel {
         colorPanelEl.colorBtnSection.classList.add(PnlClasses.sectionControlClass[0]);
             colorPanelEl.colorBtn.classList.add(PnlClasses.sectionControlClass[1]);
         colorPanelEl.cTwoContainer.classList.add(PnlClasses.sectionSignClass[0]);
-            colorPanelEl.cTwoP.classList.add(PnlClasses.sectionSignClass[1]);
+            colorPanelEl.cTwoP.classList.add(PnlClasses.sectionSignClass[1]);     
 
         let node = document.getElementsByClassName('addPnl')[0];
         node.insertAdjacentElement( 'beforebegin', colorPanelEl.container);
 
         themeUI.calcWidth();
         themeUI.mainColor(colorPanelEl.container);
-    }
-}
-
-class controller {
-    constructor() {
-
+        themeUI.bindPanelButtons(colorPanelEl.container);
     }
 }
