@@ -5,45 +5,39 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css" >
+    <link rel="stylesheet" href="./main.css" >
 
     <title>Color Generator</title>
 
-    <script src="dynamics.js"></script>
-    <script src="colorConvert.js"></script>
-
+    <script src="./dynamics.js"></script>
+    <script src="./colorConvert.js"></script>
+    <script src="./app.js"></script>
 	</head>
 	<body>
+        <header class="header">
+            <a href="./ColorGen.html">Color Gen v 1.1</a>
 
-    <header class="header">
-        <a href="FlexBox.html">Color Gen v 1.1</a>
+            <button> /// </button>
+            
+            <div id="controls">
+                    <button disabled class="toggleColorMode menuBtn"> darkmode </button>
+            </div>
+            
+    <!--<div class="inputForm">
 
-        <button> /// </button>
+                    <input>        
         
-        <div id="controls">
-                <button class="toggleColorMode"> darkmode </button>
-        </div>
-        
-<!--<div class="inputForm">
-
-                <input>        
-    
-            </div>-->
-        
-    </header>
-        
+                </div>-->
+            
+        </header> 
     <div class="container">
-    <div class="external">
-        <div class="addPnl">
-
-            <div class="ColorPnl"></div>
-
-            <div class="bgColorPnl"></div>
-
-            <button class="addPnl">+</button>
-
+        <div class="subContainer">
+            <div class="addPnl">
+                <div class="ColorPnl"></div>
+                <div class="bgColorPnl"></div>
+                <button class="addPnl menuBtn">+</button>
+            </div>
         </div>
-    </div>
     </div>
 	</body>
 </html>
