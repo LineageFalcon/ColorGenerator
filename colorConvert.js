@@ -90,12 +90,22 @@ class colorConvert {
         return [r, g, b];
     }
 
-    static changeLightness(color, lightValue) {
-        for(let i = 0; i < 3; i++) {
-            if (color[i] !== 0 && color[i] >= lightValue) {
-                color[i] -= lightValue;
-            } else if (color[i] === color[i]) {
-                color[i] = 0;
+    static changeLightness(color, lightValue) { //should use hsl for changing the saturation and lightness
+        if(lightValue >= 0) {
+            for(let i = 0; i < 3; i++) {
+                if (color[i] !== 0 && color[i] >= lightValue) {
+                    color[i] -= lightValue;
+                } else if (color[i] === color[i]) {
+                    color[i] = 0;
+                }
+            }
+        } else {
+            for(let i = 0; i < 3; i++) {
+                if (color[i] !== 255 && color[i] <= 255-lightValue) {
+                    color[i] -= lightValue;
+                } else if (color[i] === color[i]) {
+                    color[i] = 255;
+                }
             }
         }
 
@@ -105,5 +115,13 @@ class colorConvert {
     static hex(x) { //unknown method --> I dont know if this is needed but I left it here for the sake of the codes integrity
         let hexD = colorConvert.getHexChars();
         return isNaN(x) ? "00" : hexD[(x - x % 16) / 16] + hexD[x % 16];
+    }
+
+    static rgbToHsl() {
+
+    }
+
+    static hslToHex() {
+
     }
 }
