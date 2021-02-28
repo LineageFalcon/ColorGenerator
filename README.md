@@ -20,3 +20,4 @@ In the best case you use this emojis to declare the topic of your commit.</br>
 - [ ] eliminate performance issues
 - [ ] change viewModel to work as much as possible with the logic instead with view
 - [ ] change the current view layout (UI) to a more responsive and base on UX one 
+- [ ] improve lightness changer function to work more accuratly
