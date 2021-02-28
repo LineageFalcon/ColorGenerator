@@ -1,6 +1,8 @@
 # ColorGenerator
 A small and fancy random color theme generator.
 
+![Image of latest ColorGen](https://github.com/LineageFalcon/ColorGenerator/blob/refac/ColorGen_v1.2.png)
+
 ## How to commit
 
 In the best case you use this emojis to declare the topic of your commit.</br>
