@@ -25,7 +25,7 @@ button {
 button.genColor {
     display: grid;
     position: relative;
-    grid-column: 1 /  4;
+    grid-column: 1 /  5;
     grid-row: 3 / 6;
     height: 100%;
     width: 100%;
@@ -157,7 +157,7 @@ div#controls {
 div.colorOne {
     display: grid;
     position: relative;
-    grid-column: 1 /  4;
+    grid-column: 1 /  5;
     grid-row: 1 / 6;
     z-index: 1;
     min-height: 100%;
@@ -169,7 +169,7 @@ div.colorOne {
 div.colorTwo {
     display: grid;
     position: relative;
-    grid-column: 1 /  4;
+    grid-column: 1 /  5;
     grid-row: 1 / 8;
     height: 100%;
     z-index: 0;
@@ -182,7 +182,7 @@ div.containerCOne {
     flex-flow: row nowrap;
     height: 50px;
     width: auto;
-    grid-column: 1 / 4;
+    grid-column: 1 / 5;
     grid-row: 4 / 5;
     justify-content: flex-start;
     text-transform: uppercase;
@@ -194,7 +194,7 @@ div.containerCTwo {
     flex-flow: row nowrap;
     width: auto;
     height: 50px;
-    grid-column: 1 / 4;
+    grid-column: 1 / 5;
     grid-row: 7 / 8;
     justify-content: flex-start;
     text-transform: uppercase;
