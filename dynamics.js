@@ -125,7 +125,7 @@ class colorPanel {//view
         colorPanelEl.container.append(colorPanelEl.colorOneElem);
         colorPanelEl.container.append(colorPanelEl.colorBtn);
         colorPanelEl.container.append(colorPanelEl.delBtn);
-            colorPanelEl.delBtn.textContent = '–';
+            colorPanelEl.delBtn.textContent = '🗙';
         colorPanelEl.container.append(colorPanelEl.cOneContainer);
             colorPanelEl.cOneContainer.append(colorPanelEl.cOneP);
                 colorPanelEl.cOneP.append(colorPanelEl.toolTipOne);
