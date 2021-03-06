@@ -1,17 +1,17 @@
 class viewHandler { // viewModel
     constructor() {
-        this._colorModeUIElements = [4];
+        viewHandler._colorModeUIElements = [4];
 
         colorPanel.main();
     }
 
     //#region Setter
     static setColorModeUIElements(elements) {
-        this._colorModeUIElements = elements;
+        viewHandler._colorModeUIElements = elements;
     }
 
     static getColorModeUIElements() {
-        return this._colorModeUIElements;
+        return viewHandler._colorModeUIElements;
     }
     //#endregion Setter
 
@@ -20,7 +20,6 @@ class viewHandler { // viewModel
 
         btnArray.forEach((arrayItem) => {
             let btnClass = arrayItem.className;
-            console.log(btnClass);
 
 			switch(btnClass) {
 				case 'toggleColorMode menuBtn': 
@@ -82,12 +81,14 @@ class viewHandler { // viewModel
 }
 class colorPanel {//view
     constructor() {
-        this._colorPanelList = [null];
+        this._colorPanelList;
+
+        colorPanel._colorPanelList = [0];
     }
 
     //#region Setter
-    static setColorPanelList(list, i) {
-        this._colorPanelList[i] = list;
+    static setColorPanelList(list) {
+        this._colorPanelList.push(list);
     }
 
     static getColorPanelList() {
@@ -97,7 +98,7 @@ class colorPanel {//view
 
     static createPnl() { //calling from instance (give instance as parameter)(maybe)
         let node = document.getElementById('container');
-        let colorPanelEl = {//first layer
+        let colorPanelEl = {
             delBtn:  document.createElement('button'), 
             colorBtn: document.createElement('button'), 
             cOneP: document.createElement('p'),
@@ -125,7 +126,7 @@ class colorPanel {//view
         colorPanelEl.container.append(colorPanelEl.colorOneElem);
         colorPanelEl.container.append(colorPanelEl.colorBtn);
         colorPanelEl.container.append(colorPanelEl.delBtn);
-            colorPanelEl.delBtn.textContent = '–';
+            colorPanelEl.delBtn.textContent = '🗙';
         colorPanelEl.container.append(colorPanelEl.cOneContainer);
             colorPanelEl.cOneContainer.append(colorPanelEl.cOneP);
                 colorPanelEl.cOneP.append(colorPanelEl.toolTipOne);
@@ -147,10 +148,12 @@ class colorPanel {//view
             colorPanelEl.cTwoP.classList.add(PnlClasses.colorTwoTextClass[1]);
                 colorPanelEl.toolTipTwo.classList.add(PnlClasses.toolTipClass);
     
-        node.insertAdjacentElement( 'beforeend', colorPanelEl.container);
+        // colorPanel._colorPanelList.push(colorPanelEl.container);
+        node.insertAdjacentElement( 'beforeend', colorPanelEl.container);//seperate funciton
         colorPanel.calcWidth();
         colorPanel.mainColor(colorPanelEl.container);
         viewHandler.bindPanelButtons(colorPanelEl.container);
+        // console.log(colorPanel.getColorPanelList());
     }
 
     static main() {
@@ -164,17 +167,18 @@ class colorPanel {//view
         let UIColorCOne;
         let UIColorCTwo;
         
-        ColorTwo = colorConvert.changeLightness(colorConvert.hexToRgb(ColorOne), 50);
-        ColorTwo = colorConvert.rgbToHex(ColorTwo);
-        UIColorCOne = colorConvert.changeLightness(colorConvert.hexToRgb(ColorOne), 60);
-        UIColorCOne = colorConvert.rgbToHex(UIColorCOne);
-        UIColorCTwo = colorConvert.changeLightness(colorConvert.hexToRgb(ColorTwo), -60);
-        UIColorCTwo = colorConvert.rgbToHex(UIColorCTwo);
+        ColorTwo = colorConvert.changeLightness(colorConvert.hexToHsl(ColorOne), -20);
+        ColorTwo = colorConvert.hslToHex(ColorTwo);
+        UIColorCOne = colorConvert.changeLightness(colorConvert.hexToHsl(ColorOne), -25);
+        UIColorCOne = colorConvert.hslToHex(UIColorCOne);
+        UIColorCTwo = colorConvert.changeLightness(colorConvert.hexToHsl(ColorTwo), 25);
+        UIColorCTwo = colorConvert.hslToHex(UIColorCTwo);
         
-        colorPanel.distributer(ColorOne, ColorTwo, UIColorCOne, UIColorCTwo, panel);
+        // colorPanel.distributerLogic(ColorOne, ColorTwo, UIColorCOne, UIColorCTwo, panel);
+        colorPanel.distributerView(ColorOne, ColorTwo, UIColorCOne, UIColorCTwo, panel);
     }
 
-    static distributer(ColorOne, ColorTwo, UIColorCOne, UIColorCTwo , panel) {//rename funciton //viewModel
+    static distributerView(ColorOne, ColorTwo, UIColorCOne, UIColorCTwo , panel) {//rename funciton //viewModel
         let cOne = panel.getElementsByClassName('cOne')[0];
         let cTwo = panel.getElementsByClassName('cTwo')[0];
         let delPnl = panel.getElementsByClassName('delPnl')[0];
