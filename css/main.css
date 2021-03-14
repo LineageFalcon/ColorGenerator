@@ -1,6 +1,6 @@
 body {
     position: absolute;
-    box-sizing: border-box;;
+    box-sizing: border-box;
     height: 100vh;
     width: 100vw;
     display: flex;
@@ -12,9 +12,13 @@ body {
     justify-content: space-between;
 }
 
+.material-icons {
+    font-size: 1.15em;
+}
+
 button {
     display: block;
-    background:  transparent;
+    background: transparent;
     padding: 10px;
     border: none;
     font-size: 1em;
@@ -26,10 +30,10 @@ button.genColor {
     display: grid;
     position: relative;
     grid-column: 1 /  5;
-    grid-row: 3 / 6;
+    grid-row: 1 / 6;
     height: 100%;
     width: 100%;
-    border-radius: 50px 50px 50px 50px;
+    border-radius: 0 0 50px 50px;
     z-index: 2;
 }
 
@@ -56,10 +60,10 @@ header {
     display: flex;
     flex-flow: row nowrap;
     position: absolute;
-    background: rgba( 255, 255, 255, 0.25 );
+    background: rgba(90, 90, 90, 0.25);
     backdrop-filter: blur( 4px );
     -webkit-backdrop-filter: blur( 4px );
-    border-bottom: 1px solid rgba( 255, 255, 255, 0.18 );
+    border-bottom: 1px solid rgba(0, 0, 0, 0.18);
     width: 100%;
     height: 6%;
     z-index: 11;
@@ -72,7 +76,7 @@ header > a {
     height: auto;
     padding: 10px;
     color: white;
-    font-size: 1em;;
+    font-size: 1em;
     text-decoration: none;
 }
 
@@ -86,6 +90,10 @@ div#controls {
     height: auto;
     width: auto;
     background-color: transparent;
+}
+
+button.toggleColorMode {
+    height: 100%;
 }
 
 /* Tooltip container */
@@ -227,31 +235,54 @@ div.containerCTwo {
 }
 
 button.addPnl {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
     z-index: 21;
-    border-radius: 15px 0 0 15px;
-    height: 100%;
+    border-radius: 0 0 0 15px;
+    height: 40%;
     width: 100%;
     text-align: center;
     font-size: 1.5em;
+    padding: 0;;
 }
 
 button.addPnl:hover{
     background-color:rgba(26, 26, 26, 0.5) ;
 }
 
-.addPnlContainer {
+button.generatorMenu {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    z-index: 21;
+    border-radius: 15px 0 0 0;
+    height: 60%;
+    width: 100%;
+    text-align: center;
+    font-size: 1.3em;
+    padding: 0;
+}
+
+button.generatorMenu:hover {
+    background-color:rgba(26, 26, 26, 0.5) 
+}
+
+.menuContainer {
     display: flex;
     position: relative;
     width: 70px;
-    height: 150px;
+    height: 175px;
     margin: 0 0 0 auto;
+    padding: 0;
     border-radius: 15px 0 0 15px;
-    background-color: rgba(88, 88, 88, 0.5);
+    background-color: rgba(31, 31, 31, 0.5);
     flex-flow: column nowrap;
     justify-content: center;
-    z-index: 20;
     align-self: center;
+    z-index: 20;
 }
 
 button.delPnl {
