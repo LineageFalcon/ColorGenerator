@@ -58,14 +58,13 @@ class viewHandler { // viewModel
 
     static addPnl(arrayItem) {
         arrayItem.addEventListener('click', () => {
-            controller.createPanel();
+            controller.pushNewPanel();
 		});
     }
 
     static delPnl(arrayItem, panel) {
         arrayItem.addEventListener('click', () => {
-            panel.remove();
-            controller.calcWidth();
+            controller.deletePanel(panel);
 		});
     }
 
@@ -101,7 +100,18 @@ class colorPanel {//view
             toolTipClass: 'tooltip'
         }
 
+        this.colorPanelElementColors = {
+            colorOne: '#aaaaaa',
+            colorTwo: '#555555',
+            colorLabelOne: '#222222',
+            colorLabelTwo: '#dddddd'
+        }
+
         this._combinedColorPanel = null;
+
+        this.combinePanelElements();
+        this.generateColors();
+        this.setColors();
     }
 
     //#region Accessors
@@ -143,36 +153,24 @@ class colorPanel {//view
     }
 
     generateColors() {
-        let colorOne = colorConvert.ranColorGen();
-        let colorTwo;
-        let UIColorCOne;
-        let UIColorCTwo;
-        
-        colorTwo = colorConvert.changeLightness(colorConvert.hexToHsl(colorOne), -20);
-        colorTwo = colorConvert.hslToHex(colorTwo);
-        UIColorCOne = colorConvert.changeLightness(colorConvert.hexToHsl(colorOne), -25);
-        UIColorCOne = colorConvert.hslToHex(UIColorCOne);
-        UIColorCTwo = colorConvert.changeLightness(colorConvert.hexToHsl(colorTwo), 25);
-        UIColorCTwo = colorConvert.hslToHex(UIColorCTwo);
-        
-        // colorPanel.distributerLogic(ColorOne, ColorTwo, UIColorCOne, UIColorCTwo, panel);
-        return {cOne: colorOne, cTwo: colorTwo, UIcolorCOne: UIColorCOne, UIcolorCTwo: UIColorCTwo};
+        this.colorPanelElementColors.colorOne = colorConvert.ranColorGen();
+        this.colorPanelElementColors.colorTwo = colorConvert.hslToHex(colorConvert.changeLightness(colorConvert.hexToHsl(this.colorPanelElementColors.colorOne), -20));
+        this.colorPanelElementColors.colorLabelOne = colorConvert.hslToHex(colorConvert.changeLightness(colorConvert.hexToHsl(this.colorPanelElementColors.colorOne), -20));
+        this.colorPanelElementColors.colorLabelTwo = colorConvert.hslToHex(colorConvert.changeLightness(colorConvert.hexToHsl(this.colorPanelElementColors.colorOne), 15));
     }
 
-    distributerView(colorObject) {//rename funciton //viewModel
-        this.colorPanelDOMElements.colorOneElem.style.backgroundColor = colorObject.cOne;
-        this.colorPanelDOMElements.colorTwoElem.style.backgroundColor = colorObject.cTwo;
+    setColors() {//rename funciton //viewModel
+        this.colorPanelDOMElements.colorOneElem.style.backgroundColor = this.colorPanelElementColors.colorOne;
+        this.colorPanelDOMElements.colorTwoElem.style.backgroundColor = this.colorPanelElementColors.colorTwo;
     
-        
-        this.colorPanelDOMElements.cOneP.textContent = colorObject.cOne;
-        this.colorPanelDOMElements.cTwoP.textContent = colorObject.cTwo;
+        this.colorPanelDOMElements.cOneP.textContent = this.colorPanelElementColors.colorOne;
+        this.colorPanelDOMElements.cTwoP.textContent = this.colorPanelElementColors.colorTwo;
 
-        this.colorPanelDOMElements.cOneP.style.color = colorObject.UIcolorCOne;
-        this.colorPanelDOMElements.cTwoP.style.color = colorObject.UIcolorCTwo;
-
+        this.colorPanelDOMElements.cOneP.style.color = this.colorPanelElementColors.colorLabelOne;
+        this.colorPanelDOMElements.cTwoP.style.color = this.colorPanelElementColors.colorLabelTwo;
         
-        this.colorPanelDOMElements.delBtn.style.backgroundColor = colorObject.cTwo;
-        this.colorPanelDOMElements.delBtn.style.color = colorObject.cOne;
+        this.colorPanelDOMElements.delBtn.style.backgroundColor = this.colorPanelElementColors.colorTwo;
+        this.colorPanelDOMElements.delBtn.style.color = this.colorPanelElementColors.colorOne;
     }
 }
 
@@ -183,8 +181,12 @@ class controller {
     }
 
     //#region Accessors
-    static setColorPanel(colorPanel) {
+    static setPushColorPanel(colorPanel) {
         controller._colorPanel.push(colorPanel);
+    }
+
+    static setSpliceColorPanel(index) {
+        controller._colorPanel.splice(index, 1);
     }
 
     static getColorPanel() {
@@ -206,30 +208,35 @@ class controller {
 
     static main() {
         viewHandler.bindMenuButtons();
-        controller.createPanel(); 
-    }
-
-    static addPanel() {
-
+        controller.pushNewPanel(); 
     }
 
     static newColors(cPanelContainer) {
-        let panel = controller.getColorPanel();
-        let i = panel.findIndex(e => e._combinedColorPanel === cPanelContainer);
+        let panelArray = controller.getColorPanel();
+        let index = panelArray.findIndex(e => e._combinedColorPanel === cPanelContainer);
 
-        panel[i].distributerView(panel[i].generateColors());
+        panelArray[index].generateColors();
+        panelArray[index].setColors();
     }
 
-    static createPanel() {
+    static pushNewPanel() {
         let panel = new colorPanel();
-        panel.combinePanelElements();
         let cPanel = panel.getCombinedColorPanel();
         let containerNode = controller.getContainerNode();
+        
         document.getElementById(containerNode).insertAdjacentElement( 'beforeend', cPanel);//seperate function
         controller.calcWidth();
-        panel.distributerView(panel.generateColors());
         viewHandler.bindPanelButtons(cPanel, panel);
-        controller.setColorPanel(panel);
+        controller.setPushColorPanel(panel);
+    }
+
+    static deletePanel(panel) {
+        let panelArray = controller.getColorPanel();
+        let index = panelArray.findIndex(e => e._combinedColorPanel === panel);
+
+        panel.remove();
+        controller.calcWidth();
+        controller.setSpliceColorPanel(index);
     }
 
     static calcWidth() {//viewModel
