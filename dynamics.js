@@ -1,11 +1,7 @@
 class viewHandler { // viewModel
-    constructor() {
-        viewHandler._colorModeUIElements = [4];
+    constructor() {}
 
-        colorPanel.main();
-    }
-
-    //#region Setter
+    //#region Accessors
     static setColorModeUIElements(elements) {
         viewHandler._colorModeUIElements = elements;
     }
@@ -13,7 +9,7 @@ class viewHandler { // viewModel
     static getColorModeUIElements() {
         return viewHandler._colorModeUIElements;
     }
-    //#endregion Setter
+    //#endregion Accessors
 
     static bindMenuButtons() {
         let btnArray = Array.prototype.slice.call(document.querySelectorAll('.menuBtn'));
@@ -62,43 +58,26 @@ class viewHandler { // viewModel
 
     static addPnl(arrayItem) {
         arrayItem.addEventListener('click', () => {
-            colorPanel.createPnl();
+            controller.createPanel();
 		});
     }
 
     static delPnl(arrayItem, panel) {
         arrayItem.addEventListener('click', () => {
             panel.remove();
-            colorPanel.calcWidth();
+            controller.calcWidth();
 		});
     }
 
     static genColor(arrayItem, panel) {
         arrayItem.addEventListener('click', () => {
-            colorPanel.mainColor(panel);
+            controller.newColors(panel);
 		});
     }
 }
 class colorPanel {//view
     constructor() {
-        this._colorPanelList;
-
-        colorPanel._colorPanelList = [0];
-    }
-
-    //#region Setter
-    static setColorPanelList(list) {
-        this._colorPanelList.push(list);
-    }
-
-    static getColorPanelList() {
-        return this._colorPanelList;
-    }
-    //#endregion Setter
-
-    static createPnl() { //calling from instance (give instance as parameter)(maybe)
-        let node = document.getElementById('container');
-        let colorPanelEl = {
+        this.colorPanelDOMElements = {
             delBtn:  document.createElement('button'), 
             colorBtn: document.createElement('button'), 
             cOneP: document.createElement('p'),
@@ -112,7 +91,7 @@ class colorPanel {//view
             cTwoContainer: document.createElement('div')
         }
         
-        let PnlClasses = {
+        this.colorPanelElementClasses = {
             containerClass: 'colorPnl', 
             colorWrapperClass: ['colorOne', 'colorTwo'],
             delBtnClass: 'delPnl',
@@ -122,78 +101,135 @@ class colorPanel {//view
             toolTipClass: 'tooltip'
         }
 
-        colorPanelEl.container.append(colorPanelEl.colorTwoElem);
-        colorPanelEl.container.append(colorPanelEl.colorOneElem);
-        colorPanelEl.container.append(colorPanelEl.colorBtn);
-        colorPanelEl.container.append(colorPanelEl.delBtn);
-            colorPanelEl.delBtn.textContent = '🗙';
-        colorPanelEl.container.append(colorPanelEl.cOneContainer);
-            colorPanelEl.cOneContainer.append(colorPanelEl.cOneP);
-                colorPanelEl.cOneP.append(colorPanelEl.toolTipOne);
-        colorPanelEl.container.append(colorPanelEl.cTwoContainer);
-            colorPanelEl.cTwoContainer.append(colorPanelEl.cTwoP);
-                colorPanelEl.cTwoP.append(colorPanelEl.toolTipTwo);
+        this._combinedColorPanel = null;
+    }
 
-        console.log(colorPanelEl.container);
+    //#region Accessors
+        setCombinedColorPanel(cColorPanel) {
+            this._combinedColorPanel = cColorPanel;
+        }
 
-        colorPanelEl.container.classList.add(PnlClasses.containerClass);
-        colorPanelEl.colorOneElem.classList.add(PnlClasses.colorWrapperClass[0]);
-        colorPanelEl.colorTwoElem.classList.add(PnlClasses.colorWrapperClass[1]);
-        colorPanelEl.delBtn.classList.add(PnlClasses.delBtnClass);
-        colorPanelEl.colorBtn.classList.add(PnlClasses.genBtnClass);
-        colorPanelEl.cOneContainer.classList.add(PnlClasses.colorOneTextClass[0]);
-            colorPanelEl.cOneP.classList.add(PnlClasses.colorOneTextClass[1]);
-                colorPanelEl.toolTipOne.classList.add(PnlClasses.toolTipClass);
-        colorPanelEl.cTwoContainer.classList.add(PnlClasses.colorTwoTextClass[0]);
-            colorPanelEl.cTwoP.classList.add(PnlClasses.colorTwoTextClass[1]);
-                colorPanelEl.toolTipTwo.classList.add(PnlClasses.toolTipClass);
+        getCombinedColorPanel() {
+            return this._combinedColorPanel;
+        }
+    //#endregion Accessors
+
+    combinePanelElements() {
+        this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.colorTwoElem);
+        this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.colorOneElem);
+        this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.colorBtn);
+        this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.delBtn);
+            this.colorPanelDOMElements.delBtn.textContent = '🗙';
+        this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.cOneContainer);
+            this.colorPanelDOMElements.cOneContainer.append(this.colorPanelDOMElements.cOneP);
+                this.colorPanelDOMElements.cOneP.append(this.colorPanelDOMElements.toolTipOne);
+        this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.cTwoContainer);
+            this.colorPanelDOMElements.cTwoContainer.append(this.colorPanelDOMElements.cTwoP);
+                this.colorPanelDOMElements.cTwoP.append(this.colorPanelDOMElements.toolTipTwo);
+
+        this.colorPanelDOMElements.container.classList.add(this.colorPanelElementClasses.containerClass);
+        this.colorPanelDOMElements.colorOneElem.classList.add(this.colorPanelElementClasses.colorWrapperClass[0]);
+        this.colorPanelDOMElements.colorTwoElem.classList.add(this.colorPanelElementClasses.colorWrapperClass[1]);
+        this.colorPanelDOMElements.delBtn.classList.add(this.colorPanelElementClasses.delBtnClass);
+        this.colorPanelDOMElements.colorBtn.classList.add(this.colorPanelElementClasses.genBtnClass);
+        this.colorPanelDOMElements.cOneContainer.classList.add(this.colorPanelElementClasses.colorOneTextClass[0]);
+            this.colorPanelDOMElements.cOneP.classList.add(this.colorPanelElementClasses.colorOneTextClass[1]);
+                this.colorPanelDOMElements.toolTipOne.classList.add(this.colorPanelElementClasses.toolTipClass);
+        this.colorPanelDOMElements.cTwoContainer.classList.add(this.colorPanelElementClasses.colorTwoTextClass[0]);
+            this.colorPanelDOMElements.cTwoP.classList.add(this.colorPanelElementClasses.colorTwoTextClass[1]);
+                this.colorPanelDOMElements.toolTipTwo.classList.add(this.colorPanelElementClasses.toolTipClass);
+
+        this._combinedColorPanel = this.colorPanelDOMElements.container;
+    }
+
+    generateColors() {
+        let colorOne = colorConvert.ranColorGen();
+        let colorTwo;
+        let UIColorCOne;
+        let UIColorCTwo;
+        
+        colorTwo = colorConvert.changeLightness(colorConvert.hexToHsl(colorOne), -20);
+        colorTwo = colorConvert.hslToHex(colorTwo);
+        UIColorCOne = colorConvert.changeLightness(colorConvert.hexToHsl(colorOne), -25);
+        UIColorCOne = colorConvert.hslToHex(UIColorCOne);
+        UIColorCTwo = colorConvert.changeLightness(colorConvert.hexToHsl(colorTwo), 25);
+        UIColorCTwo = colorConvert.hslToHex(UIColorCTwo);
+        
+        // colorPanel.distributerLogic(ColorOne, ColorTwo, UIColorCOne, UIColorCTwo, panel);
+        return {cOne: colorOne, cTwo: colorTwo, UIcolorCOne: UIColorCOne, UIcolorCTwo: UIColorCTwo};
+    }
+
+    distributerView(colorObject) {//rename funciton //viewModel
+        this.colorPanelDOMElements.colorOneElem.style.backgroundColor = colorObject.cOne;
+        this.colorPanelDOMElements.colorTwoElem.style.backgroundColor = colorObject.cTwo;
     
-        // colorPanel._colorPanelList.push(colorPanelEl.container);
-        node.insertAdjacentElement( 'beforeend', colorPanelEl.container);//seperate funciton
-        colorPanel.calcWidth();
-        colorPanel.mainColor(colorPanelEl.container);
-        viewHandler.bindPanelButtons(colorPanelEl.container);
-        // console.log(colorPanel.getColorPanelList());
+        
+        this.colorPanelDOMElements.cOneP.textContent = colorObject.cOne;
+        this.colorPanelDOMElements.cTwoP.textContent = colorObject.cTwo;
+
+        this.colorPanelDOMElements.cOneP.style.color = colorObject.UIcolorCOne;
+        this.colorPanelDOMElements.cTwoP.style.color = colorObject.UIcolorCTwo;
+
+        
+        this.colorPanelDOMElements.delBtn.style.backgroundColor = colorObject.cTwo;
+        this.colorPanelDOMElements.delBtn.style.color = colorObject.cOne;
+    }
+}
+
+class controller {
+    constructor() {
+        this._colorPanel = null;
+        this._containerNode = null;
+    }
+
+    //#region Accessors
+    static setColorPanel(colorPanel) {
+        controller._colorPanel.push(colorPanel);
+    }
+
+    static getColorPanel() {
+        return controller._colorPanel;
+    }
+    
+    static setContainerNode(node) {
+        controller._containerNode = node;
+    }
+    
+    static getContainerNode() {
+        return controller._containerNode;
+     }
+    //#endregion Accessors
+
+    static check() {
+        console.log(controller.getColorPanel());
     }
 
     static main() {
         viewHandler.bindMenuButtons();
-        colorPanel.createPnl();
+        controller.createPanel(); 
     }
 
-    static mainColor(panel) {//rename function //model
-        let ColorOne = colorConvert.ranColorGen();
-        let ColorTwo;
-        let UIColorCOne;
-        let UIColorCTwo;
-        
-        ColorTwo = colorConvert.changeLightness(colorConvert.hexToHsl(ColorOne), -20);
-        ColorTwo = colorConvert.hslToHex(ColorTwo);
-        UIColorCOne = colorConvert.changeLightness(colorConvert.hexToHsl(ColorOne), -25);
-        UIColorCOne = colorConvert.hslToHex(UIColorCOne);
-        UIColorCTwo = colorConvert.changeLightness(colorConvert.hexToHsl(ColorTwo), 25);
-        UIColorCTwo = colorConvert.hslToHex(UIColorCTwo);
-        
-        // colorPanel.distributerLogic(ColorOne, ColorTwo, UIColorCOne, UIColorCTwo, panel);
-        colorPanel.distributerView(ColorOne, ColorTwo, UIColorCOne, UIColorCTwo, panel);
+    static addPanel() {
+
     }
 
-    static distributerView(ColorOne, ColorTwo, UIColorCOne, UIColorCTwo , panel) {//rename funciton //viewModel
-        let cOne = panel.getElementsByClassName('cOne')[0];
-        let cTwo = panel.getElementsByClassName('cTwo')[0];
-        let delPnl = panel.getElementsByClassName('delPnl')[0];
+    static newColors(cPanelContainer) {
+        let panel = controller.getColorPanel();
+        let i = panel.findIndex(e => e._combinedColorPanel === cPanelContainer);
 
-        panel.getElementsByClassName('colorOne')[0].style.backgroundColor = ColorOne;
-        panel.getElementsByClassName('colorTwo')[0].style.backgroundColor = ColorTwo;
-    
-        cOne.textContent = ColorOne;
-        cTwo.textContent = ColorTwo;
+        panel[i].distributerView(panel[i].generateColors());
+    }
 
-        cOne.style.color = UIColorCOne;
-        cTwo.style.color = UIColorCTwo;
-
-        delPnl.style.backgroundColor = ColorTwo;
-        delPnl.style.color = ColorOne;
+    static createPanel() {
+        let panel = new colorPanel();
+        panel.combinePanelElements();
+        let cPanel = panel.getCombinedColorPanel();
+        let containerNode = controller.getContainerNode();
+        document.getElementById(containerNode).insertAdjacentElement( 'beforeend', cPanel);//seperate function
+        controller.calcWidth();
+        panel.distributerView(panel.generateColors());
+        viewHandler.bindPanelButtons(cPanel, panel);
+        controller.setColorPanel(panel);
     }
 
     static calcWidth() {//viewModel
