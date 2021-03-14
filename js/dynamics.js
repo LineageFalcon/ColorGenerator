@@ -225,7 +225,7 @@ class controller {
         let containerNode = controller.getContainerNode();
         
         document.getElementById(containerNode).insertAdjacentElement( 'beforeend', cPanel);//seperate function
-        controller.calcWidth();
+        controller.checkDevice();
         viewHandler.bindPanelButtons(cPanel, panel);
         controller.setPushColorPanel(panel);
     }
@@ -235,8 +235,23 @@ class controller {
         let index = panelArray.findIndex(e => e._combinedColorPanel === panel);
 
         panel.remove();
-        controller.calcWidth();
+        controller.checkDevice();
         controller.setSpliceColorPanel(index);
+    }
+
+    static checkDevice() {
+        if(document.body.clientWidth <= 600) {
+            controller.calcHeight();
+        } else {
+            controller.calcWidth();
+        }
+    }
+
+    static calcHeight() {
+        let colorPnl = document.getElementsByClassName('colorPnl');
+        for(let i = colorPnl.length - 1; i >= 0; i--) {
+            colorPnl[i].style.height = 100 / (colorPnl.length) + "%";
+        }
     }
 
     static calcWidth() {//viewModel
