@@ -78,7 +78,8 @@ class colorPanel {//view
     constructor() {
         this.colorPanelDOMElements = {
             delBtn:  document.createElement('button'), 
-            colorBtn: document.createElement('button'), 
+            colorBtn: document.createElement('button'),
+            delBtnIcon: document.createElement('i'),
             cOneP: document.createElement('p'),
             cTwoP: document.createElement('p'),
             toolTipOne: document.createElement('span'),
@@ -94,6 +95,7 @@ class colorPanel {//view
             containerClass: 'colorPnl', 
             colorWrapperClass: ['colorOne', 'colorTwo'],
             delBtnClass: 'delPnl',
+            delBtnIconClass: 'material-icons',
             genBtnClass: 'genColor',
             colorOneTextClass: ['containerCOne', 'cOne'],
             colorTwoTextClass: ['containerCTwo', 'cTwo'],
@@ -129,7 +131,8 @@ class colorPanel {//view
         this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.colorOneElem);
         this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.colorBtn);
         this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.delBtn);
-            this.colorPanelDOMElements.delBtn.textContent = '🗙';
+            this.colorPanelDOMElements.delBtn.append(this.colorPanelDOMElements.delBtnIcon);
+                this.colorPanelDOMElements.delBtnIcon.textContent = 'remove_circle_outline';
         this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.cOneContainer);
             this.colorPanelDOMElements.cOneContainer.append(this.colorPanelDOMElements.cOneP);
                 this.colorPanelDOMElements.cOneP.append(this.colorPanelDOMElements.toolTipOne);
@@ -141,6 +144,7 @@ class colorPanel {//view
         this.colorPanelDOMElements.colorOneElem.classList.add(this.colorPanelElementClasses.colorWrapperClass[0]);
         this.colorPanelDOMElements.colorTwoElem.classList.add(this.colorPanelElementClasses.colorWrapperClass[1]);
         this.colorPanelDOMElements.delBtn.classList.add(this.colorPanelElementClasses.delBtnClass);
+            this.colorPanelDOMElements.delBtnIcon.classList.add(this.colorPanelElementClasses.delBtnIconClass);
         this.colorPanelDOMElements.colorBtn.classList.add(this.colorPanelElementClasses.genBtnClass);
         this.colorPanelDOMElements.cOneContainer.classList.add(this.colorPanelElementClasses.colorOneTextClass[0]);
             this.colorPanelDOMElements.cOneP.classList.add(this.colorPanelElementClasses.colorOneTextClass[1]);
