@@ -26,6 +26,8 @@ class viewHandler { // viewModel
 					break;
 			}
 		});
+
+        viewHandler.checkDeviceRotation();
     }
 
     static bindPanelButtons(panel) {
@@ -72,6 +74,12 @@ class viewHandler { // viewModel
         arrayItem.addEventListener('click', () => {
             controller.newColors(panel);
 		});
+    }
+
+    static checkDeviceRotation() {
+        window.addEventListener('resize', () => {
+            controller.checkDevice();
+        });
     }
 }
 class colorPanel {//view
@@ -255,6 +263,7 @@ class controller {
         let colorPnl = document.getElementsByClassName('colorPnl');
         for(let i = colorPnl.length - 1; i >= 0; i--) {
             colorPnl[i].style.height = 100 / (colorPnl.length) + "%";
+            colorPnl[i].style.width = "100%";
         }
     }
 
@@ -262,6 +271,7 @@ class controller {
         let colorPnl = document.getElementsByClassName('colorPnl');
         for(let i = colorPnl.length - 1; i >= 0; i--) {
             colorPnl[i].style.width = 100 / (colorPnl.length) + "%";
+            colorPnl[i].style.height = "100%";
         }
     }
 }
