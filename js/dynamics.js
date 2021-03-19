@@ -1,3 +1,6 @@
+//createCookie();
+//window.localStorage.setItem('key', 'value');
+
 class viewHandler { // viewModel
     constructor() {}
 
