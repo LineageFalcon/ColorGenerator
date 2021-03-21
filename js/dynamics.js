@@ -1,15 +1,12 @@
+class browerStorageInterface {
+    constructor() {}
+}
+
+//createCookie();
+//window.localStorage.setItem('key', 'value');
+
 class viewHandler { // viewModel
     constructor() {}
-
-    //#region Accessors
-    static setColorModeUIElements(elements) {
-        viewHandler._colorModeUIElements = elements;
-    }
-
-    static getColorModeUIElements() {
-        return viewHandler._colorModeUIElements;
-    }
-    //#endregion Accessors
 
     static bindMenuButtons() {
         let btnArray = Array.prototype.slice.call(document.querySelectorAll('.menuBtn'));
@@ -20,26 +17,6 @@ class viewHandler { // viewModel
 			switch(btnClass) {
 				case 'toggleColorMode menuBtn': 
 				        viewHandler.toggleColorMode(arrayItem);
-					break;
-				case 'addPnl menuBtn': 
-				        viewHandler.addPnl(arrayItem);
-					break;
-			}
-		});
-    }
-
-    static bindPanelButtons(panel) {
-        let btnArray = Array.prototype.slice.call(panel.querySelectorAll('button'));
-
-        btnArray.forEach((arrayItem) => {
-			let btnClass = arrayItem.className;
-
-			switch(btnClass) {
-				case 'delPnl':
-				        viewHandler.delPnl(arrayItem, panel);
-					break;
-				case 'genColor':
-				        viewHandler.genColor(arrayItem, panel);
 					break;
 			}
 		});
@@ -55,49 +32,91 @@ class viewHandler { // viewModel
             }
         });
     }
+}
 
-    static addPnl(arrayItem) {
+class colorPanelEventHandler {
+    constructor(controller) {
+        this._controller = controller;
+    }
+
+    bindAddBtn() {//temporary method
+        let addBtn = document.getElementById('addPnl');//temporary variable
+        this.addPnl(addBtn);//temporary method 
+    }
+
+    bindPanelButtons(panelListItem) {
+        let btnArray = Array.prototype.slice.call(panelListItem._combinedColorPanel.querySelectorAll('button'));
+
+        btnArray.forEach((arrayItem) => {
+			let btnClass = arrayItem.className;
+
+			switch(btnClass) {
+				case 'delPnl':
+				        this.delPnl(arrayItem, panelListItem);
+					break;
+				case 'genColor':
+				        this.genColor(arrayItem, panelListItem);
+					break;
+                // case 'addPnl menuBtn': 
+				//         this.addPnl(arrayItem);
+				// 	break;
+			}
+		});
+
+        this.checkDeviceRotation();
+    }
+
+    delPnl(arrayItem, panelListItem) {
         arrayItem.addEventListener('click', () => {
-            controller.pushNewPanel();
+            this._controller.deletePanel(panelListItem);
 		});
     }
 
-    static delPnl(arrayItem, panel) {
+    genColor(arrayItem, panelListItem) {
         arrayItem.addEventListener('click', () => {
-            controller.deletePanel(panel);
+            this._controller.newColors(panelListItem);
 		});
     }
 
-    static genColor(arrayItem, panel) {
+    addPnl(arrayItem) {
         arrayItem.addEventListener('click', () => {
-            controller.newColors(panel);
+            this._controller.pushNewPanel();
 		});
+    }
+
+    checkDeviceRotation() {
+        window.addEventListener('resize', () => {
+            this._controller.checkDevice();
+        });
     }
 }
 class colorPanel {//view
     constructor() {
         this.colorPanelDOMElements = {
             delBtn:  document.createElement('button'), 
-            colorBtn: document.createElement('button'), 
-            cOneP: document.createElement('p'),
-            cTwoP: document.createElement('p'),
+            colorBtn: document.createElement('button'),
+            dragBtn: document.createElement('button'),
+            cTwoBtn: document.createElement('button'),
+            cOneBtn: document.createElement('button'),
+            delBtnIcon: document.createElement('i'),
+            dragBtnIcon: document.createElement('i'),
             toolTipOne: document.createElement('span'),
             toolTipTwo: document.createElement('span'),
             container: document.createElement('div'),
             colorOneElem: document.createElement('div'),
-            colorTwoElem: document.createElement('div'),
-            cOneContainer: document.createElement('div'), 
-            cTwoContainer: document.createElement('div')
+            colorTwoElem: document.createElement('div')
         }
         
         this.colorPanelElementClasses = {
             containerClass: 'colorPnl', 
             colorWrapperClass: ['colorOne', 'colorTwo'],
             delBtnClass: 'delPnl',
+            btnIconClass: 'material-icons',
             genBtnClass: 'genColor',
-            colorOneTextClass: ['containerCOne', 'cOne'],
-            colorTwoTextClass: ['containerCTwo', 'cTwo'],
-            toolTipClass: 'tooltip'
+            colorOneTextBtnClass: 'cOne',
+            colorTwoTextBtnClass: 'cTwo',
+            toolTipClass: 'tooltip',
+            dragBtnClass: 'dragPnl'
         }
 
         this.colorPanelElementColors = {
@@ -115,11 +134,11 @@ class colorPanel {//view
     }
 
     //#region Accessors
-        setCombinedColorPanel(cColorPanel) {
+        set CombinedColorPanel(cColorPanel) {
             this._combinedColorPanel = cColorPanel;
         }
 
-        getCombinedColorPanel() {
+        get CombinedColorPanel() {
             return this._combinedColorPanel;
         }
     //#endregion Accessors
@@ -129,25 +148,28 @@ class colorPanel {//view
         this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.colorOneElem);
         this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.colorBtn);
         this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.delBtn);
-            this.colorPanelDOMElements.delBtn.textContent = '🗙';
-        this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.cOneContainer);
-            this.colorPanelDOMElements.cOneContainer.append(this.colorPanelDOMElements.cOneP);
-                this.colorPanelDOMElements.cOneP.append(this.colorPanelDOMElements.toolTipOne);
-        this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.cTwoContainer);
-            this.colorPanelDOMElements.cTwoContainer.append(this.colorPanelDOMElements.cTwoP);
-                this.colorPanelDOMElements.cTwoP.append(this.colorPanelDOMElements.toolTipTwo);
+            this.colorPanelDOMElements.delBtn.append(this.colorPanelDOMElements.delBtnIcon);
+                this.colorPanelDOMElements.delBtnIcon.textContent = 'remove_circle_outline';
+        this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.dragBtn);
+            this.colorPanelDOMElements.dragBtn.append(this.colorPanelDOMElements.dragBtnIcon);
+                this.colorPanelDOMElements.dragBtnIcon.textContent = 'drag_handle';
+        this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.cOneBtn);
+            this.colorPanelDOMElements.cOneBtn.append(this.colorPanelDOMElements.toolTipOne);
+        this.colorPanelDOMElements.container.append(this.colorPanelDOMElements.cTwoBtn);
+            this.colorPanelDOMElements.cTwoBtn.append(this.colorPanelDOMElements.toolTipTwo);
 
         this.colorPanelDOMElements.container.classList.add(this.colorPanelElementClasses.containerClass);
         this.colorPanelDOMElements.colorOneElem.classList.add(this.colorPanelElementClasses.colorWrapperClass[0]);
         this.colorPanelDOMElements.colorTwoElem.classList.add(this.colorPanelElementClasses.colorWrapperClass[1]);
         this.colorPanelDOMElements.delBtn.classList.add(this.colorPanelElementClasses.delBtnClass);
+            this.colorPanelDOMElements.delBtnIcon.classList.add(this.colorPanelElementClasses.btnIconClass);
+        this.colorPanelDOMElements.dragBtn.classList.add(this.colorPanelElementClasses.dragBtnClass);
+            this.colorPanelDOMElements.dragBtnIcon.classList.add(this.colorPanelElementClasses.btnIconClass)
         this.colorPanelDOMElements.colorBtn.classList.add(this.colorPanelElementClasses.genBtnClass);
-        this.colorPanelDOMElements.cOneContainer.classList.add(this.colorPanelElementClasses.colorOneTextClass[0]);
-            this.colorPanelDOMElements.cOneP.classList.add(this.colorPanelElementClasses.colorOneTextClass[1]);
-                this.colorPanelDOMElements.toolTipOne.classList.add(this.colorPanelElementClasses.toolTipClass);
-        this.colorPanelDOMElements.cTwoContainer.classList.add(this.colorPanelElementClasses.colorTwoTextClass[0]);
-            this.colorPanelDOMElements.cTwoP.classList.add(this.colorPanelElementClasses.colorTwoTextClass[1]);
-                this.colorPanelDOMElements.toolTipTwo.classList.add(this.colorPanelElementClasses.toolTipClass);
+        this.colorPanelDOMElements.cOneBtn.classList.add(this.colorPanelElementClasses.colorOneTextBtnClass);
+            // this.colorPanelDOMElements.toolTipOne.classList.add(this.colorPanelElementClasses.toolTipClass);
+        this.colorPanelDOMElements.cTwoBtn.classList.add(this.colorPanelElementClasses.colorTwoTextBtnClass);
+            // this.colorPanelDOMElements.toolTipTwo.classList.add(this.colorPanelElementClasses.toolTipClass);
 
         this._combinedColorPanel = this.colorPanelDOMElements.container;
     }
@@ -163,11 +185,12 @@ class colorPanel {//view
         this.colorPanelDOMElements.colorOneElem.style.backgroundColor = this.colorPanelElementColors.colorOne;
         this.colorPanelDOMElements.colorTwoElem.style.backgroundColor = this.colorPanelElementColors.colorTwo;
     
-        this.colorPanelDOMElements.cOneP.textContent = this.colorPanelElementColors.colorOne;
-        this.colorPanelDOMElements.cTwoP.textContent = this.colorPanelElementColors.colorTwo;
+        this.colorPanelDOMElements.cOneBtn.textContent = this.colorPanelElementColors.colorOne;
+        this.colorPanelDOMElements.cTwoBtn.textContent = this.colorPanelElementColors.colorTwo;
 
-        this.colorPanelDOMElements.cOneP.style.color = this.colorPanelElementColors.colorLabelOne;
-        this.colorPanelDOMElements.cTwoP.style.color = this.colorPanelElementColors.colorLabelTwo;
+        this.colorPanelDOMElements.cOneBtn.style.color = this.colorPanelElementColors.colorLabelOne;
+        this.colorPanelDOMElements.dragBtn.style.color = this.colorPanelElementColors.colorLabelOne;
+        this.colorPanelDOMElements.cTwoBtn.style.color = this.colorPanelElementColors.colorLabelTwo;
         
         this.colorPanelDOMElements.delBtn.style.backgroundColor = this.colorPanelElementColors.colorTwo;
         this.colorPanelDOMElements.delBtn.style.color = this.colorPanelElementColors.colorOne;
@@ -175,12 +198,17 @@ class colorPanel {//view
 }
 
 class controller {
-    constructor() {
-        this._colorPanel = null;
-        this._containerNode = null;
+    constructor(containerNode, colorPanelList) {
+        this._colorPanel = colorPanelList;
+        this._containerNode = containerNode;
+        this._colorPanelEventHandler = new colorPanelEventHandler(this);
+
+        console.log(this);
+        this.main();
     }
 
     //#region Accessors
+
     static setPushColorPanel(colorPanel) {
         controller._colorPanel.push(colorPanel);
     }
@@ -206,43 +234,58 @@ class controller {
         console.log(controller.getColorPanel());
     }
 
-    static main() {
+    main() {
         viewHandler.bindMenuButtons();
-        controller.pushNewPanel(); 
+        this._colorPanelEventHandler.bindAddBtn();
+        this.pushNewPanel(); 
+
+        this.colorPanel;
     }
 
-    static newColors(cPanelContainer) {
-        let panelArray = controller.getColorPanel();
-        let index = panelArray.findIndex(e => e._combinedColorPanel === cPanelContainer);
-
-        panelArray[index].generateColors();
-        panelArray[index].setColors();
+    newColors(panelListItem) {
+        for (let panel of this._colorPanel) {
+            if(panel._combinedColorPanel === panelListItem._combinedColorPanel) {
+                panel.generateColors();
+                panel.setColors();
+            }
+        }
     }
 
-    static pushNewPanel() {
-        let panel = new colorPanel();
-        let cPanel = panel.getCombinedColorPanel();
-        let containerNode = controller.getContainerNode();
+    pushNewPanel() {
+        let panelListItem = new colorPanel();
+        let cPanel = panelListItem.CombinedColorPanel;
         
-        document.getElementById(containerNode).insertAdjacentElement( 'beforeend', cPanel);//seperate function
-        controller.calcWidth();
-        viewHandler.bindPanelButtons(cPanel, panel);
-        controller.setPushColorPanel(panel);
+        document.getElementById(this._containerNode).insertAdjacentElement( 'beforeend', cPanel);//seperate function
+        this._colorPanel.add(panelListItem);
+        this._colorPanelEventHandler.bindPanelButtons(panelListItem);
+        this.checkDevice();
     }
 
-    static deletePanel(panel) {
-        let panelArray = controller.getColorPanel();
-        let index = panelArray.findIndex(e => e._combinedColorPanel === panel);
-
-        panel.remove();
-        controller.calcWidth();
-        controller.setSpliceColorPanel(index);
+    deletePanel(panelListItem) {
+        panelListItem._combinedColorPanel.remove();
+        this._colorPanel.delete(panelListItem);
+        this.checkDevice();
     }
 
-    static calcWidth() {//viewModel
-        let colorPnl = document.getElementsByClassName('colorPnl');
-        for(let i = colorPnl.length - 1; i >= 0; i--) {
-            colorPnl[i].style.width = 100 / (colorPnl.length) + "%";
+    checkDevice() {
+        if(document.body.clientWidth <= 600) {
+            this.calcHeight();
+        } else {
+            this.calcWidth();
+        }
+    }
+
+    calcHeight() {
+        for(let panel of this._colorPanel) {
+            panel._combinedColorPanel.style.height = 100 / (this._colorPanel.size) + "%";
+            panel._combinedColorPanel.style.width = "100%";
+        }
+    }
+
+    calcWidth() {//viewModel
+        for(let panel of this._colorPanel) {
+            panel._combinedColorPanel.style.width = 100 / (this._colorPanel.size) + "%";
+            panel._combinedColorPanel.style.height = "100%";
         }
     }
 }
