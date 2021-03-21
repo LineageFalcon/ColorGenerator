@@ -1,4 +1,4 @@
-class browerStorageInterface {
+class browserStorageInterface {
     constructor() {}
 }
 
@@ -52,11 +52,14 @@ class colorPanelEventHandler {
 
 			switch(btnClass) {
 				case 'delPnl':
-				        this.delPnl(arrayItem, panelListItem);
+				    this.delPnl(arrayItem, panelListItem);
 					break;
 				case 'genColor':
-				        this.genColor(arrayItem, panelListItem);
+				    this.genColor(arrayItem, panelListItem);
 					break;
+                case 'dragPnl':
+                    this.setDragAndDropEvent(arrayItem, panelListItem);
+                    break;
                 // case 'addPnl menuBtn': 
 				//         this.addPnl(arrayItem);
 				// 	break;
@@ -82,6 +85,63 @@ class colorPanelEventHandler {
         arrayItem.addEventListener('click', () => {
             this._controller.pushNewPanel();
 		});
+    }
+
+    setDragAndDropEvent(arrayItem, panelListItem) {
+        console.log('eventRegistered');
+        let panel = panelListItem._combinedColorPanel, firstX, firstY;
+        
+        arrayItem.addEventListener('mousedown', (event) => {
+            console.log('start');
+            event.preventDefault();
+	        firstX = event.pageX;
+	        firstY = event.pageY;
+            console.log(event);
+            panelListItem.colorPanelDOMElements.container.classList.add('drag');
+        }, false);
+        
+        panelListItem.colorPanelDOMElements.container.addEventListener('mousemove', this.movePanel, false);
+
+        window.addEventListener('mouseup', () => {
+            arrayItem.removeEventListener('mousemove', this.movePanel, false);
+            panelListItem.colorPanelDOMElements.container.classList.remove('drag');
+        }, false);
+//#region mobileDnD
+        arrayItem.addEventListener('touchstart', (event) => {
+            console.log('mobileStart');
+            event.preventDefault();
+	        firstX = event.pageX;
+	        firstY = event.pageY;
+            panelListItem.colorPanelDOMElements.container.classList.add('drag');
+
+            arrayItem.addEventListener('touchmove', (event) => {
+                console.log('mobileMoving');
+                panel.style.top = event.pageY-firstY + 'px';
+                console.log(firstX, firstY);
+                console.log((event.pageY-firstY) + 'px');
+            }, false);
+
+            window.addEventListener('touchend', (event) => {
+                arrayItem.removeEventListener('touchmove', (event) => {
+                    console.log('mobileMoving');
+                    panel.style.top = event.pageY-panel.firstY + 'px';
+                    console.log(panel.firstX, panel.firstY);
+                    console.log((event.pageY-panel.firstY) + 'px');
+                }, false);
+                panelListItem.colorPanelDOMElements.container.classList.remove('drag');
+            }, false);
+
+        }, false);
+        //#endregion mobileDnD
+    }
+
+    movePanel(event) {
+        console.log('moving');
+        console.log(firstX, firstY);
+        console.log(event);
+        panel.style.left = event.pageX - firstX  + 'px';
+        console.log(event.pageX, event.pageY);
+        console.log((event.pageX-event.pageX) + 'px');
     }
 
     checkDeviceRotation() {
@@ -126,6 +186,8 @@ class colorPanel {//view
             colorLabelTwo: '#dddddd'
         }
 
+        this._panelAttributeOrder = 1;
+
         this._combinedColorPanel = null;
 
         this.combinePanelElements();
@@ -140,6 +202,15 @@ class colorPanel {//view
 
         get CombinedColorPanel() {
             return this._combinedColorPanel;
+        }
+
+        set PanelAttributeOrder(order) {
+            this._panelAttributeOrder = order;
+            this.colorPanelDOMElements.container.style.order = order;
+        }
+
+        get PanelAttributeOrder() {
+            return this._panelAttributeOrder;
         }
     //#endregion Accessors
 
@@ -208,25 +279,16 @@ class controller {
     }
 
     //#region Accessors
-
-    static setPushColorPanel(colorPanel) {
-        controller._colorPanel.push(colorPanel);
-    }
-
-    static setSpliceColorPanel(index) {
-        controller._colorPanel.splice(index, 1);
-    }
-
-    static getColorPanel() {
-        return controller._colorPanel;
+    get ColorPanel() {
+        return this._colorPanel;
     }
     
-    static setContainerNode(node) {
-        controller._containerNode = node;
+    set ContainerNode(node) {
+        this._containerNode = node;
     }
     
-    static getContainerNode() {
-        return controller._containerNode;
+    get ContainerNode() {
+        return this._containerNode;
      }
     //#endregion Accessors
 
@@ -254,6 +316,9 @@ class controller {
     pushNewPanel() {
         let panelListItem = new colorPanel();
         let cPanel = panelListItem.CombinedColorPanel;
+        
+        console.log(this._colorPanel.size);
+        panelListItem.PanelAttributeOrder = this._colorPanel.size;
         
         document.getElementById(this._containerNode).insertAdjacentElement( 'beforeend', cPanel);//seperate function
         this._colorPanel.add(panelListItem);
