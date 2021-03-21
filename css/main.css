@@ -80,19 +80,21 @@ header > a {
 }
 
 div#controls {
+    display: flex;
     flex-flow: row nowrap;
     overflow: hidden;
     z-index: 10;
     margin: 0 0 0 auto;
-    justify-self: flex-end;
-    align-items: center;
+    place-content: center;
     height: auto;
-    width: auto;
+    width: 70px;
     background-color: transparent;
 }
 
 button.toggleColorMode {
     height: 100%;
+    width: 100%;
+    padding: 0;
 }
 
 #container {
@@ -112,6 +114,20 @@ div.colorPnl {
     position: relative;
     grid-template-columns: 1fr 25% 1fr;
     grid-template-rows: 60px 1fr 1fr 1fr 40% 4% 20%;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: none;
+    -webkit-user-drag: none;
+}
+
+div.drag {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); 
+	-webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); 
+	-moz-box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); 
+    z-index: 9;
 }
 
 div.colorOne {
