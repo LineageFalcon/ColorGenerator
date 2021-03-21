@@ -1,3 +1,7 @@
+:root {
+    --backgroundColorMenuMobile: #121212;
+}
+
 @media only screen and (max-width: 600px) {
     body {
         flex-flow:  column nowrap;
@@ -7,7 +11,7 @@
     header {
         position: relative;
         height: 10%;
-        background-color: rgb(47, 47, 47);
+        background-color: var(--backgroundColorMenuMobile);
         backdrop-filter: none;
     }
 
@@ -22,7 +26,7 @@
         border-radius: 0;
     }
 
-    button.addPnl {
+    button#addPnl {
         height: 100%;
         width: 25%;
         border-radius: 0;
@@ -33,11 +37,11 @@
         height: 10%;
         margin: auto 0 0 auto;
         border-radius: 0;
-        background-color: rgb(47, 47, 47);
+        background-color: var(--backgroundColorMenuMobile);
         flex-flow: row nowrap;
     }
 
-    .colorPnl {
+    div.colorPnl {
         grid-template-columns: 40% 45% 15%;
         grid-template-rows: 1fr 3fr 1fr;
     }
@@ -53,14 +57,18 @@
         grid-row: 1 / 5;
     }
 
-    div.containerCOne {
+    button.cOne {
         grid-column: 2 / 4;
-        grid-row: 1 / 5;
+        grid-row: 1 / 2;
+        place-self: start start;
+        border-radius: 0 0 5px 0;
     }
 
-    div.containerCTwo {
+    button.cTwo {
         grid-column: 1 / 2;
-        grid-row: 1 / 5;
+        grid-row: 1 / 2;
+        place-self: start start;
+        border-radius: 0 0 5px 0;
     }
 
     button.genColor {
@@ -75,5 +83,15 @@
         border-radius: 25px 0 0 25px;
         padding: 0;
         line-height: 0%;
+    }
+
+    button.dragPnl {
+        width: auto;
+        height: 100%;
+        grid-column: 2/ 2;
+        grid-row: 2/ 2;
+        place-self: center start;
+        place-items: center center;
+        border-radius: 0 50px 50px 0;
     }
 }
