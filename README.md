@@ -1,7 +1,11 @@
 # ColorGenerator
 A small and fancy random color theme generator.
 
-![Image of latest ColorGen](https://github.com/LineageFalcon/ColorGenerator/blob/refac/ColorGen_v1.2.6.png)
+## Preview Desktop
+![Image of latest ColorGen](https://github.com/LineageFalcon/ColorGenerator/blob/refac/ColorGen_v1.2.7.png)
+
+## Preview Mobile
+![Image of latest ColorGen Mobile](https://github.com/LineageFalcon/ColorGenerator/blob/refac/ColorGen_v1.2.7_Mobile.png)
 
 ## How to commit
 
