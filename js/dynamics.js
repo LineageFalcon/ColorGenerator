@@ -35,8 +35,10 @@ class viewHandler { // viewModel
 }
 
 class colorPanelEventHandler {
-    constructor(controller) {
+    constructor(controller, containerNode) {
         this._controller = controller;
+        this._panelContainerNode = containerNode;
+        this._dndHanlder = new Set();
     }
 
     bindAddBtn() {//temporary method
@@ -58,7 +60,7 @@ class colorPanelEventHandler {
 				    this.genColor(arrayItem, panelListItem);
 					break;
                 case 'dragPnl':
-                    this.setDragAndDropEvent(arrayItem, panelListItem);
+                    this.setDragAndDropEvent(panelListItem);
                     break;
                 // case 'addPnl menuBtn': 
 				//         this.addPnl(arrayItem);
@@ -87,61 +89,10 @@ class colorPanelEventHandler {
 		});
     }
 
-    setDragAndDropEvent(arrayItem, panelListItem) {
-        console.log('eventRegistered');
-        let panel = panelListItem._combinedColorPanel, firstX, firstY;
-        
-        arrayItem.addEventListener('mousedown', (event) => {
-            console.log('start');
-            event.preventDefault();
-	        firstX = event.pageX;
-	        firstY = event.pageY;
-            console.log(event);
-            panelListItem.colorPanelDOMElements.container.classList.add('drag');
-        }, false);
-        
-        panelListItem.colorPanelDOMElements.container.addEventListener('mousemove', this.movePanel, false);
+    setDragAndDropEvent(panelListItem) {
+        new dragAndDropHandler(this._panelContainerNode, panelListItem);
 
-        window.addEventListener('mouseup', () => {
-            arrayItem.removeEventListener('mousemove', this.movePanel, false);
-            panelListItem.colorPanelDOMElements.container.classList.remove('drag');
-        }, false);
-//#region mobileDnD
-        arrayItem.addEventListener('touchstart', (event) => {
-            console.log('mobileStart');
-            event.preventDefault();
-	        firstX = event.pageX;
-	        firstY = event.pageY;
-            panelListItem.colorPanelDOMElements.container.classList.add('drag');
-
-            arrayItem.addEventListener('touchmove', (event) => {
-                console.log('mobileMoving');
-                panel.style.top = event.pageY-firstY + 'px';
-                console.log(firstX, firstY);
-                console.log((event.pageY-firstY) + 'px');
-            }, false);
-
-            window.addEventListener('touchend', (event) => {
-                arrayItem.removeEventListener('touchmove', (event) => {
-                    console.log('mobileMoving');
-                    panel.style.top = event.pageY-panel.firstY + 'px';
-                    console.log(panel.firstX, panel.firstY);
-                    console.log((event.pageY-panel.firstY) + 'px');
-                }, false);
-                panelListItem.colorPanelDOMElements.container.classList.remove('drag');
-            }, false);
-
-        }, false);
-        //#endregion mobileDnD
-    }
-
-    movePanel(event) {
-        console.log('moving');
-        console.log(firstX, firstY);
-        console.log(event);
-        panel.style.left = event.pageX - firstX  + 'px';
-        console.log(event.pageX, event.pageY);
-        console.log((event.pageX-event.pageX) + 'px');
+        console.log('dnd Class created'); 
     }
 
     checkDeviceRotation() {
@@ -272,7 +223,7 @@ class controller {
     constructor(containerNode, colorPanelList) {
         this._colorPanel = colorPanelList;
         this._containerNode = containerNode;
-        this._colorPanelEventHandler = new colorPanelEventHandler(this);
+        this._colorPanelEventHandler = new colorPanelEventHandler(this, this._containerNode);
 
         console.log(this);
         this.main();
