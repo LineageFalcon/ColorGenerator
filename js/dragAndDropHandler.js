@@ -1,10 +1,15 @@
 class dragAndDropHandler {
-    constructor(containerNode, panelNode) {
+    constructor(containerNode, panelNode, reponsiveMaxDeviceWidth) {
         this._panelContainer = document.getElementById(containerNode);
-        this._panelElementCombined = panelNode.CombinedColorPanel;
         this._panelElement = panelNode;
+        this._reponsiveMaxDeviceWidth = reponsiveMaxDeviceWidth;
+        
+        this._panelElementCombined = panelNode.CombinedColorPanel;
         this._dragElement = this._panelElement.colorPanelDOMElements.dragBtn;
-        this._borderBox;
+        this._borderBox = {
+            top: null,
+            left: null
+        };
         this._startX;
         this._startY;
         this._deltaX;
@@ -26,7 +31,8 @@ class dragAndDropHandler {
     }
     
     dragBtnPressed(event) {
-        this._borderBox = this._panelElementCombined.getBoundingClientRect();
+        this._borderBox.top = this._panelElementCombined.offsetTop;
+        this._borderBox.left = this._panelElementCombined.offsetLeft;
         this._startX = event.clientX;
         this._startY = event.clientY;
         this._panelContainer.addEventListener('pointermove', this.panelMoved, { passive: true });
@@ -38,7 +44,7 @@ class dragAndDropHandler {
         this._panelElementCombined.classList.add('drag');
 
         if (!this._animationFrame) {
-            if(document.body.clientWidth <= 600) {
+            if(document.body.clientWidth <= this._reponsiveMaxDeviceWidth) {
                 this._deltaY = event.clientY - this._startY;
                 this._animationFrame = requestAnimationFrame(this.panelMovedAnimatioFrameY);
             } else {
@@ -70,7 +76,7 @@ class dragAndDropHandler {
         }
         this._panelElementCombined.classList.remove('drag');
 
-        if(document.body.clientWidth <= 600) {
+        if(document.body.clientWidth <= this._reponsiveMaxDeviceWidth) {
             this._panelElementCombined.style.top = this._borderBox.top + this._deltaY + 'px';// border box must be added again after container is absolute
             console.log(this._deltaY);
         } else {

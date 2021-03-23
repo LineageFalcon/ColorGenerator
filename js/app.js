@@ -1,3 +1,3 @@
 document.addEventListener("DOMContentLoaded", function() {
-    new controller('container', new Set());
+    new controller('container', new Set(), 770);
 });

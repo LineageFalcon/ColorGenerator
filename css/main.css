@@ -20,6 +20,7 @@ body {
     padding: 0!important;
     font-family: arial, monospace;
     font-size: 1.5em;
+    -webkit-font-smoothing: antialiased;
 }
 
 .material-icons {
@@ -56,8 +57,8 @@ p {
 }
 
 header {
-    display: flex;
     position: absolute;
+    display: flex;
     flex-flow: row nowrap;
     background: var(--backgroundColorMenuDesktop);
     backdrop-filter: blur( 4px );
@@ -99,12 +100,14 @@ button.toggleColorMode {
 
 #container {
     position: absolute;
+    top: 0;
     display: flex;
     flex: 1;
     height: 100%;
     width: 100%;
     flex-flow: row wrap;
     align-content: flex-start;
+    overflow: hidden;
 }
 
 div.colorPnl {
@@ -121,8 +124,8 @@ div.colorPnl {
     /* Required to make elements draggable in old WebKit */
     -khtml-user-drag: none;
     -webkit-user-drag: none;
-    will-change: transform, left, top;
-    contain: layout;
+    /* will-change: transform, left, top;
+    contain: layout; */
 }
 
 div.drag {
@@ -134,7 +137,7 @@ div.drag {
 
 div.colorOne {
     display: grid;
-    position: relative;
+    position: absolute;
     grid-column: 1 /  5;
     grid-row: 1 / 6;
     z-index: 1;
@@ -178,12 +181,6 @@ button.cOne {
     grid-row: 4 / 5;
 }
 
-button.cOne:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-    border-radius: 0 0 5px 0;
-}
-
 button.cTwo {
     position: relative;
     display: flex;
@@ -196,13 +193,8 @@ button.cTwo {
     grid-row: 7 / 8;
 }
 
-button.cTwo:hover {
-    background-color: rgba(0, 0, 0, 0.30);
-    cursor: pointer;
-    border-radius: 0 0 5px 0;
-}
-
 button#addPnl {
+    position: relative;
     display: flex;
     place-content: center;
     align-items: center;

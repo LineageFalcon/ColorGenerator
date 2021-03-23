@@ -35,9 +35,9 @@ class viewHandler { // viewModel
 }
 
 class colorPanelEventHandler {
-    constructor(controller, containerNode) {
+    constructor(controller) {
         this._controller = controller;
-        this._panelContainerNode = containerNode;
+        this._panelContainerNode = this._controller.ContainerNode;
         this._dndHanlder = new Set();
     }
 
@@ -90,7 +90,7 @@ class colorPanelEventHandler {
     }
 
     setDragAndDropEvent(panelListItem) {
-        new dragAndDropHandler(this._panelContainerNode, panelListItem);
+        new dragAndDropHandler(this._panelContainerNode, panelListItem, this._controller.ResponsiveMaxDeviceWidth);
 
         console.log('dnd Class created'); 
     }
@@ -206,6 +206,9 @@ class colorPanel {//view
     setColors() {//rename funciton //viewModel
         this.colorPanelDOMElements.colorOneElem.style.backgroundColor = this.colorPanelElementColors.colorOne;
         this.colorPanelDOMElements.colorTwoElem.style.backgroundColor = this.colorPanelElementColors.colorTwo;
+        this.colorPanelDOMElements.colorOneElem.style.boxShadow = this.colorPanelElementColors.colorOne + ' 0 0 0 1px';
+        this.colorPanelDOMElements.colorTwoElem.style.boxShadow = this.colorPanelElementColors.colorTwo + ' 0 0 0 1px';
+        console.log(this.colorPanelElementColors.colorTwo + ' 0 0 0 1px');
     
         this.colorPanelDOMElements.cOneBtn.textContent = this.colorPanelElementColors.colorOne;
         this.colorPanelDOMElements.cTwoBtn.textContent = this.colorPanelElementColors.colorTwo;
@@ -214,16 +217,17 @@ class colorPanel {//view
         this.colorPanelDOMElements.dragBtn.style.color = this.colorPanelElementColors.colorLabelOne;
         this.colorPanelDOMElements.cTwoBtn.style.color = this.colorPanelElementColors.colorLabelTwo;
         
-        this.colorPanelDOMElements.delBtn.style.backgroundColor = this.colorPanelElementColors.colorTwo;
         this.colorPanelDOMElements.delBtn.style.color = this.colorPanelElementColors.colorOne;
+        this.colorPanelDOMElements.delBtn.style.backgroundColor = this.colorPanelElementColors.colorTwo;
     }
 }
 
 class controller {
-    constructor(containerNode, colorPanelList) {
+    constructor(containerNode, colorPanelList, width) {
         this._colorPanel = colorPanelList;
         this._containerNode = containerNode;
-        this._colorPanelEventHandler = new colorPanelEventHandler(this, this._containerNode);
+        this._colorPanelEventHandler = new colorPanelEventHandler(this);
+        this._responsiveMaxDeviceWidth = width;
 
         console.log(this);
         this.main();
@@ -241,11 +245,11 @@ class controller {
     get ContainerNode() {
         return this._containerNode;
      }
-    //#endregion Accessors
 
-    static check() {
-        console.log(controller.getColorPanel());
-    }
+     get ResponsiveMaxDeviceWidth() {
+        return this._responsiveMaxDeviceWidth;
+     }
+    //#endregion Accessors
 
     main() {
         viewHandler.bindMenuButtons();
@@ -284,7 +288,7 @@ class controller {
     }
 
     checkDevice() {
-        if(document.body.clientWidth <= 600) {
+        if(document.body.clientWidth <= this._responsiveMaxDeviceWidth) {
             this.calcHeight();
         } else {
             this.calcWidth();
@@ -292,16 +296,24 @@ class controller {
     }
 
     calcHeight() {
+        let coefficient = 100;
         for(let panel of this._colorPanel) {
             panel._combinedColorPanel.style.height = 100 / (this._colorPanel.size) + "%";
+            panel._combinedColorPanel.style.top = coefficient - 100 / (this._colorPanel.size) + "%";
             panel._combinedColorPanel.style.width = "100%";
+            panel._combinedColorPanel.style.left = 0;
+            coefficient -= 100 / (this._colorPanel.size);
         }
     }
 
     calcWidth() {//viewModel
+        let coefficient = 100;
         for(let panel of this._colorPanel) {
             panel._combinedColorPanel.style.width = 100 / (this._colorPanel.size) + "%";
+            panel._combinedColorPanel.style.left = coefficient - 100 / (this._colorPanel.size) + "%";
             panel._combinedColorPanel.style.height = "100%";
+            panel._combinedColorPanel.style.top = 0;
+            coefficient -= 100 / (this._colorPanel.size);
         }
     }
 }
