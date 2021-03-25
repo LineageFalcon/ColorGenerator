@@ -74,6 +74,7 @@ class dragAndDropHandler {
             cancelAnimationFrame(this._animationFrame);
             this._animationFrame = null;
         }
+        
         this._panelElementCombined.classList.remove('drag');
 
         if(document.body.clientWidth <= this._reponsiveMaxDeviceWidth) {
