@@ -1,3 +1,12 @@
+---
+title: ColorGen
+date: "26.03.2021"
+language: english 
+description: description
+creator: Malcom Cook
+contributor: Magnus Cook
+---
+
 # ColorGenerator
 
 A small and fancy random color theme generator.
