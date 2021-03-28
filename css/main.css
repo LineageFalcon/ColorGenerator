@@ -4,16 +4,20 @@
     touch-action: none;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 html {
     height: -webkit-fill-available;
 }
 
 body {
     position: absolute;
-    box-sizing: border-box;
     height: 100vh;
     height: -webkit-fill-available;
-    width: 100vw;
+    width: 100%;
+    max-width: 100vw;
     display: flex;
     flex-flow: row nowrap;
     margin: 0!important;
