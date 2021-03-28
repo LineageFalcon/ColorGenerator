@@ -5,7 +5,7 @@ class browserStorageInterface {
 //createCookie();
 //window.localStorage.setItem('key', 'value');
 
-class viewHandler { // viewModel
+class viewHandlerOld { // viewModel
     constructor() {}
 
     static bindMenuButtons() {
@@ -16,7 +16,7 @@ class viewHandler { // viewModel
 
 			switch(btnClass) {
 				case 'toggleColorMode menuBtn': 
-				        viewHandler.toggleColorMode(arrayItem);
+				        viewHandlerOld.toggleColorMode(arrayItem);
 					break;
 			}
 		});
@@ -24,7 +24,7 @@ class viewHandler { // viewModel
 
     static toggleColorMode(arrayItem) {
         arrayItem.addEventListener('click', () => {
-            viewHandler.colorMode();
+            viewHandlerOld.colorMode();
             if(arrayItem.classList.contains('white')) {
                 arrayItem.textContent = "lightmode";
             } else {
@@ -222,15 +222,15 @@ class colorPanel {//view
     }
 }
 
-class controller {
+class controllerOld {
     constructor(containerNode, colorPanelList, width) {
         this._colorPanel = colorPanelList;
         this._containerNode = containerNode;
         this._colorPanelEventHandler = new colorPanelEventHandler(this);
-        this._responsiveMaxDeviceWidth = width;
+        this._responsiveMaxDeviceWidth = width;//in die UI
 
         console.log(this);
-        this.main();
+        this.main();//wird durch document ready ausgeführt
     }
 
     //#region Accessors
@@ -252,7 +252,7 @@ class controller {
     //#endregion Accessors
 
     main() {
-        viewHandler.bindMenuButtons();
+        viewHandlerOld.bindMenuButtons();
         this._colorPanelEventHandler.bindAddBtn();
         this.pushNewPanel(); 
 

@@ -35,6 +35,9 @@ class dragAndDropHandler {
         this._borderBox.left = this._panelElementCombined.offsetLeft;
         this._startX = event.clientX;
         this._startY = event.clientY;
+
+        this._dragElement.onpointerover = (event) => {console.log(event.toString() + ' something is over me');};
+
         this._panelContainer.addEventListener('pointermove', this.panelMoved, { passive: true });
         this._panelContainer.addEventListener('pointerup', this.panelReleased, { passive: true });
         this._panelContainer.addEventListener('pointercancel', this.panelReleased, { passive: true });
