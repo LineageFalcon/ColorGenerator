@@ -114,7 +114,7 @@ button.toggleColorMode {
     overflow: hidden;
 }
 
-div.colorPnl {
+div.colorPanel {
     position: absolute;
     display: grid;
     height: 100%;
@@ -132,7 +132,7 @@ div.colorPnl {
     contain: layout; */
 }
 
-div.drag {
+div.dragPanel {
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); 
 	-webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); 
 	-moz-box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); 
@@ -151,7 +151,7 @@ div.colorOne {
     border-radius: 0 0 50px 50px;
 }
 
-button.genColor {
+button.newRandomColor {
     position: relative;
     display: flex;
     grid-column: 1 /  5;
@@ -247,7 +247,7 @@ button.generatorMenu:hover {
     z-index: 20;
 }
 
-button.delPnl {
+button.deletePanel {
     position: relative;
     display: flex;
     flex-flow: row nowrap;
@@ -264,7 +264,7 @@ button.delPnl {
     font-size: 1.5em;
 }
 
-button.dragPnl {
+button.dragPanel {
     position: relative;
     display: grid;
     grid-column: 2 /  2;
