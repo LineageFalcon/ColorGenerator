@@ -6,13 +6,15 @@ class eventHandler {
         console.log(eventTargetClass);
         switch (eventTargetClass) {
             case viewHandler._newRandomColorButtonID:
-                // viewHandler.findTargetedPanel(event).setNewRandomColor();
                 viewHandler.findTargetedPanel(event.target, eventTargetClass).setNewRandomColor();
-                console.log('new Color :D');
+                    console.log('new Color :D');
                 break;
 
             case viewHandler._deletePanelButtonID:
-                console.log('panel deleted, job done ^^');
+            case viewHandler._deletePanelIconID:
+                let targetPanel = viewHandler.findTargetedPanel(event.target, eventTargetClass);
+                viewHandler.deletePanel(targetPanel);
+                    console.log('panel deleted, job done ^^');
                 break;
 
             default:
