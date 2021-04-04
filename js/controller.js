@@ -2,12 +2,11 @@ class controller {
     constructor() {}
 
     static main() {
-        // viewHandler.bindMenuButtons();
-        // this._colorPanelEventHandler.bindAddBtn();
-        // this.pushNewPanel(); 
-
-        // this.colorPanel;
         viewHandler.loadView();
-        viewHandler._colorPanelContainerNode.onclick = (event) => {eventHandler.delegateClickEvent(event)};
+        viewHandler._colorPanelContainerNode.onclick = (event) => {eventHandler.delegateClickEvent(event);};
+        viewHandler._addPanelButton.onclick = () => {viewHandler.addPanel();};
+        window.onresize = () => {viewHandler.checkOrientation()};
+
+        viewHandler.addPanel();
     }
 }
