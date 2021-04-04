@@ -21,7 +21,7 @@ class viewHandler { // viewModel
         this._deletePanelButtonID = 'deletePanel';
         this._deletePanelIconID = 'material-icons';
 
-        this._responsiveMaxDeviceWidth = 700;
+        this._responsiveMaxDeviceWidth = 770;
         this._colorPanelList = new Set();
     }
 
