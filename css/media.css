@@ -27,23 +27,26 @@
 
     button.generatorMenu {
         height: 100%;
-        width: 75%;
+        width: 100%;
         border-radius: 0;
+        grid-row: span 2;
     }
 
     button#addPnl {
         height: 100%;
-        width: 25%;
+        width: 100%;
         border-radius: 0;
+        grid-row: span 2;
     }
 
     .menuContainer {
         width: 100%;
         height: 10vh;
-        margin: auto 0 0 auto;
+        top: auto;
+        bottom: 0;
+        grid-template-columns: 75% 25%;
         border-radius: 0;
         background-color: var(--backgroundColorMenuMobile);
-        flex-flow: row nowrap;
     }
 
     div.colorPanel {
@@ -66,14 +69,12 @@
         grid-column: 2 / 4;
         grid-row: 1 / 2;
         place-self: start start;
-        border-radius: 0 0 5px 0;
     }
 
     button.cTwo {
         grid-column: 1 / 2;
         grid-row: 1 / 2;
         place-self: start start;
-        border-radius: 0 0 5px 0;
     }
 
     button.newRandomColor {
