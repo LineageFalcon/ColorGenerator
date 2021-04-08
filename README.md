@@ -13,10 +13,10 @@ contributor: Magnus Cook
 A small and fancy random color theme generator.
 
 ## Preview Desktop
-![Image of latest ColorGen](https://github.com/LineageFalcon/ColorGenerator/blob/refac/ColorGen_v1.2.7.png)
+![Image of latest ColorGen](https://github.com/LineageFalcon/ColorGenerator/blob/code-refactoring-from-base/ColorGen_v1.2.7.png)
 
 ## Preview Mobile
-![Image of latest ColorGen Mobile](https://github.com/LineageFalcon/ColorGenerator/blob/refac/ColorGen_v1.2.7_Mobile.png)
+![Image of latest ColorGen Mobile](https://github.com/LineageFalcon/ColorGenerator/blob/code-refactoring-from-base/ColorGen_v1.2.7_Mobile.png)
 
 ## How to commit
 
