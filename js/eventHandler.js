@@ -1,9 +1,11 @@
 class eventHandler {
     constructor() {}
 
-    static delegateClickEvent(event) {
+    static delegateClickEvent(event) {// first find target element and return panel as well as its property on which can be decided what the element is supposed to call
         let eventTargetClass = event.target.className;
         console.log(eventTargetClass);
+        console.log(event.target);
+        viewHandler.findTargetedPanelAlpha(event.target);
         switch (eventTargetClass) {
             case viewHandler._newRandomColorButtonID:
                 viewHandler.findTargetedPanel(event.target, eventTargetClass).setNewRandomColor();
@@ -21,5 +23,9 @@ class eventHandler {
                 console.log('no entry found :/');
                 break;
         }
+    }
+
+    static delegatePointerDownEvent() {
+        console.log("%cPinged",  "color: red");
     }
 }

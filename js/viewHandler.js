@@ -13,7 +13,7 @@ class viewHandler { // viewModel
     static _colorPanelList;
 //#endregion properties
 
-    static loadView() {
+    static loadView() {//hardcoded setttings for the software to be adjusted
         this._addPanelButton = document.getElementById('addPnl');
         this._colorPanelContainerNode = document.getElementById('container');
 
@@ -48,6 +48,17 @@ class viewHandler { // viewModel
         for (let panel of this._colorPanelList) {
             if(panel.colorPanelDOMElements[propertyToCheck] === targetItem) {
                 return panel;
+            }
+        }
+    }
+
+    static findTargetedPanelAlpha(targetItem) {
+        for (let panel of this._colorPanelList) {
+            for(let property in panel.colorPanelDOMElements) {
+                if(panel.colorPanelDOMElements[property] === targetItem) {
+                    console.log(property + " hello?")
+                    return panel;
+                }
             }
         }
     }
