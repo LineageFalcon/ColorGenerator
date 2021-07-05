@@ -24,7 +24,7 @@ In the best case you use this emojis to declare the topic of your commit.</br>
 - [x] use createObj inside an instance class instead of strings and methods inside an obj
 - [x] improve lightness changer function to work more accuratly
 - [x] change the current view layout (UI) to a more responsive and base on UX one 
-- [ ] drag and drop of panel position
+- [ ] drag and drop of panel position (in progress...)
 - [ ] adjust all variable names to a name scheme
 - [ ] finalize refac with structuring classes based on MVVM/ MVP/ MVC
 - [ ] change viewModel to work as much as possible with the logic instead with view
