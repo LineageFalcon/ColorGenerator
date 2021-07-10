@@ -2,30 +2,31 @@ class eventHandler {
     constructor() {}
 
     static delegateClickEvent(event) {// first find target element and return panel as well as its property on which can be decided what the element is supposed to call
-        let eventTargetClass = event.target.className;
-        console.log(eventTargetClass);
         console.log(event.target);
-        viewHandler.findTargetedPanelAlpha(event.target);
-        switch (eventTargetClass) {
-            case viewHandler._newRandomColorButtonID:
-                viewHandler.findTargetedPanel(event.target, eventTargetClass).setNewRandomColor();
-                    console.log('new Color :D');
+        const targetedObject = viewHandler.findTargetedPanel(event.target);
+        switch (targetedObject.propertyClass) {
+            case targetedObject.eventKeys[1]:
+                targetedObject.colorPanel.setNewRandomColor();
+                    console.log('New color suspect!');
                 break;
 
-            case viewHandler._deletePanelButtonID:
-            case viewHandler._deletePanelIconID:
-                let targetPanel = viewHandler.findTargetedPanel(event.target, eventTargetClass);
-                viewHandler.deletePanel(targetPanel);
-                    console.log('panel deleted, job done ^^');
+            case targetedObject.eventKeys[0]:
+            case targetedObject.eventKeys[5]:
+                viewHandler.deletePanel(targetedObject.colorPanel);
+                    console.log('Panel liquidated!');
                 break;
 
             default:
-                console.log('no entry found :/');
+                console.log('%cError, no entry found :/', 'color: orangered');
                 break;
         }
     }
 
-    static delegatePointerDownEvent() {
-        console.log("%cPinged",  "color: red");
+    static delegatePointerDownEvent(event) {
+        console.log('%cPinged',  'color: red');
+        const targetedObject = viewHandler.findTargetedPanel(event.target);
+        if(targetedObject.propertyClass === targetedObject.eventKeys[2] || targetedObject.propertyClass === targetedObject.eventKeys[6]) {
+            console.log('dragItemChoosen');
+        }
     }
 }

@@ -17,47 +17,16 @@ class viewHandler { // viewModel
         this._addPanelButton = document.getElementById('addPnl');
         this._colorPanelContainerNode = document.getElementById('container');
 
-        this._newRandomColorButtonID = 'newRandomColor';
-        this._deletePanelButtonID = 'deletePanel';
-        this._deletePanelIconID = 'material-icons';
-
         this._responsiveMaxDeviceWidth = 770;
         this._colorPanelList = new Set();
     }
 
-    static findTargetedPanel(targetItem, targetItemClass) {
-        let propertyToCheck;
-
-        switch (targetItemClass) {
-            case viewHandler._newRandomColorButtonID:
-                propertyToCheck = viewHandler._newRandomColorButtonID;
-                break;
-        
-            case viewHandler._deletePanelButtonID:
-                propertyToCheck = viewHandler._deletePanelButtonID;
-                break;
-
-            case viewHandler._deletePanelIconID:
-                propertyToCheck = 'delBtnIcon';//should still be a dynamic property
-                break;
-
-            default:
-                break;
-        }
-
-        for (let panel of this._colorPanelList) {
-            if(panel.colorPanelDOMElements[propertyToCheck] === targetItem) {
-                return panel;
-            }
-        }
-    }
-
-    static findTargetedPanelAlpha(targetItem) {
-        for (let panel of this._colorPanelList) {
-            for(let property in panel.colorPanelDOMElements) {
-                if(panel.colorPanelDOMElements[property] === targetItem) {
-                    console.log(property + " hello?")
-                    return panel;
+    static findTargetedPanel(targetItem) {
+        for (let colorPanel of this._colorPanelList) {
+            for(let propertyClass in colorPanel.colorPanelDOMElements) {
+                if(colorPanel.colorPanelDOMElements[propertyClass] === targetItem) {
+                    const eventKeys = Object.keys(colorPanel.colorPanelDOMElements);
+                    return {colorPanel: colorPanel, propertyClass: propertyClass, eventKeys: eventKeys};
                 }
             }
         }
