@@ -100,9 +100,8 @@ class colorPanel {
     
         this.colorPanelDOMElements.colorOneElem.style.backgroundColor = this.colorPanelElementColors.colorOne;
         this.colorPanelDOMElements.colorTwoElem.style.backgroundColor = this.colorPanelElementColors.colorTwo;
-        this.colorPanelDOMElements.colorOneElem.style.boxShadow = this.colorPanelElementColors.colorOne + ' 0 0 0 1px';
-        this.colorPanelDOMElements.colorTwoElem.style.boxShadow = this.colorPanelElementColors.colorTwo + ' 0 0 0 1px';
-        console.log(this.colorPanelElementColors.colorTwo + ' 0 0 0 1px');
+        // this.colorPanelDOMElements.colorOneElem.style.boxShadow = this.colorPanelElementColors.colorOne + ' 0 0 0 1px';
+        // this.colorPanelDOMElements.colorTwoElem.style.boxShadow = this.colorPanelElementColors.colorTwo + ' 0 0 0 1px';
     
         this.colorPanelDOMElements.cOneBtn.textContent = this.colorPanelElementColors.colorOne;
         this.colorPanelDOMElements.cTwoBtn.textContent = this.colorPanelElementColors.colorTwo;
@@ -111,7 +110,6 @@ class colorPanel {
         this.colorPanelDOMElements.dragPanel.style.color = this.colorPanelElementColors.colorLabelOne;
         this.colorPanelDOMElements.cTwoBtn.style.color = this.colorPanelElementColors.colorLabelTwo;
         
-        this.colorPanelDOMElements.deletePanel.style.color = this.colorPanelElementColors.colorOne;
-        this.colorPanelDOMElements.deletePanel.style.backgroundColor = this.colorPanelElementColors.colorTwo;
+        this.colorPanelDOMElements.deletePanel.style.color = this.colorPanelElementColors.colorTwo;
     }
 }
