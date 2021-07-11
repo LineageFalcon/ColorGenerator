@@ -129,7 +129,7 @@ div.colorPanel {
     transition: transform ease-out 150ms;
 }
 
-div.dragPanel {
+div.dragPanel {/*style when dragged*/
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); 
 	-webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); 
 	-moz-box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); 
@@ -247,7 +247,7 @@ button.deletePanel {
     position: relative;
     display: grid;
     overflow: hidden;
-    grid-column: 2 /  3;
+    grid-column: 1 /  4;
     grid-row: 1 / 3;
     z-index: 3;
     place-items: center;
