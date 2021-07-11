@@ -124,11 +124,9 @@ div.colorPanel {
     -khtml-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-    /* Required to make elements draggable in old WebKit */
     -khtml-user-drag: none;
     -webkit-user-drag: none;
-    /* will-change: transform, left, top;
-    contain: layout; */
+    transition: transform ease-out 150ms;
 }
 
 div.dragPanel {
@@ -271,4 +269,9 @@ button.dragPanel {
     padding: 0;
     border-radius: 50px 50px 0 0;
     z-index: 3;
+}
+
+.drag {
+    box-shadow: 0px 0px 15px 15px rgba(46, 46, 46, 0.2), 0px 0px 15px 0px #131313;
+    z-index: 10!important;
 }
