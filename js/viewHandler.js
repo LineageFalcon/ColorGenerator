@@ -5,19 +5,17 @@ class viewHandler { // viewModel
     static _addPanelButton;
     static _colorPanelContainerNode;
 
-    static _newRandomColorButtonID;
-    static _deletePanelButtonID;
-    static _deletePanelIconID;
-
     static _responsiveMaxDeviceWidth;
+    static _dragStyleClass;
     static _colorPanelList;
 //#endregion properties
 
-    static loadView() {//hardcoded setttings for the software to be adjusted
+    static load() {//hardcoded setttings for the software to be adjusted
         this._addPanelButton = document.getElementById('addPnl');
         this._colorPanelContainerNode = document.getElementById('container');
 
         this._responsiveMaxDeviceWidth = 770;
+        this._dragStyleClass = 'drag';
         this._colorPanelList = new Set();
     }
 
@@ -34,9 +32,6 @@ class viewHandler { // viewModel
 
     static addPanel() {
         let colorPanelInstance = new colorPanel();
-        
-        console.log(this._colorPanelList.size);
-        // panelListItem.PanelAttributeOrder = this._colorPanel.size;
         
         this._colorPanelContainerNode.insertAdjacentElement( 'beforeend', colorPanelInstance.CombinedColorPanel);//seperate function maybe
         this._colorPanelList.add(colorPanelInstance);
@@ -55,6 +50,7 @@ class viewHandler { // viewModel
 
     static calcHeight() {
         let coefficient = 0;
+        dragAndDrop._movementDirection = {moveOnX: false, moveOnY: true};
         for(let panel of this._colorPanelList) {
             coefficient += 100 / (this._colorPanelList.size);
             panel._combinedColorPanel.style.height = 100 / (this._colorPanelList.size) + "%";
@@ -66,6 +62,7 @@ class viewHandler { // viewModel
 
     static calcWidth() {
         let coefficient = 0;
+        dragAndDrop._movementDirection = {moveOnX: true, moveOnY: false};
         for(let panel of this._colorPanelList) {
             coefficient += 100 / (this._colorPanelList.size);
             panel._combinedColorPanel.style.width = 100 / (this._colorPanelList.size) + "%";

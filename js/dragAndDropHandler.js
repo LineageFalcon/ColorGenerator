@@ -1,94 +1,55 @@
-class dragAndDropHandler {
-    constructor(containerNode, panelNode, reponsiveMaxDeviceWidth) {
-        this._panelContainer = document.getElementById(containerNode);
-        this._panelElement = panelNode;
-        this._reponsiveMaxDeviceWidth = reponsiveMaxDeviceWidth;
-        
-        this._panelElementCombined = panelNode.CombinedColorPanel;
-        this._dragElement = this._panelElement.colorPanelDOMElements.dragBtn;
-        this._borderBox = {
-            top: null,
-            left: null
-        };
-        this._startX;
-        this._startY;
-        this._deltaX;
-        this._deltaX;
-        this._animationFrame;
+class dragAndDrop {
+    constructor() {}
 
-        this.panelMoved = this.panelMoved.bind(this);
-        this.panelReleased = this.panelReleased.bind(this);// bind for adding and removing eventlisteners
-        this.panelMovedAnimatioFrameY = this.panelMovedAnimatioFrameY.bind(this);
-        this.panelMovedAnimatioFrameX = this.panelMovedAnimatioFrameX.bind(this);
-        
-        this.setDragAndDropEvent();
+    static _container;
+    static _dragStyleClass;
+    static _movementDirection;//object
+    static _animationFrame;
+    //static _callback;
+
+    static load(container, classString, /*callback*/) {
+        this._container = container;
+        this._dragStyleClass = classString;
+        // this._callback = callback;
     }
 
-    setDragAndDropEvent() {
-        console.log('eventRegistered');
-        
-        this._dragElement.addEventListener('pointerdown', this.dragBtnPressed.bind(this), { passive: true });
+    static drag(event, dragItem) {
+        const offsetTop = dragItem.offsetTop; 
+        const offsetLeft = dragItem.offsetLeft;
+        console.log(offsetLeft);
+        this._container.onpointermove = (moveEvent) => {this.move({
+            event: event,
+            moveEvent: moveEvent,
+            dragItem: dragItem, 
+            initalMousePositionX: event.clientX,
+            initalMousePositionY: event.clientY
+        })}
+        this._container.onpointerup = () => {this.removeDrag(dragItem, offsetTop, offsetLeft)}
+        this._container.onpointercancel = () => {this.removeDrag(dragItem, offsetTop, offsetLeft)}
     }
-    
-    dragBtnPressed(event) {
-        this._borderBox.top = this._panelElementCombined.offsetTop;
-        this._borderBox.left = this._panelElementCombined.offsetLeft;
-        this._startX = event.clientX;
-        this._startY = event.clientY;
 
-        this._dragElement.onpointerover = (event) => {console.log(event.toString() + ' something is over me');};
+    static move(dragParameters) {
+        console.log('%cstill running!', 'color: green');
+        dragParameters.dragItem.classList.add(this._dragStyleClass);
 
-        this._panelContainer.addEventListener('pointermove', this.panelMoved, { passive: true });
-        this._panelContainer.addEventListener('pointerup', this.panelReleased, { passive: true });
-        this._panelContainer.addEventListener('pointercancel', this.panelReleased, { passive: true });
-    };
-    
-    panelMoved(event) {
-        this._panelElementCombined.classList.add('drag');
-
-        if (!this._animationFrame) {
-            if(document.body.clientWidth <= this._reponsiveMaxDeviceWidth) {
-                this._deltaY = event.clientY - this._startY;
-                this._animationFrame = requestAnimationFrame(this.panelMovedAnimatioFrameY);
-            } else {
-                this._deltaX = event.clientX - this._startX;
-                this._animationFrame = requestAnimationFrame(this.panelMovedAnimatioFrameX);
-            }
+        if(this._movementDirection.moveOnX) {
+            dragParameters.dragItem.style.transform = 'translate3d(' + (dragParameters.moveEvent.clientX - dragParameters.initalMousePositionX) + 'px, 0px, 0px)';
         }
-        // console.log(event.clientY, this._startY);
-    }
-
-    panelMovedAnimatioFrameY() {
-        this._panelElementCombined.style.transform = 'translate3d(0px, ' + this._deltaY + 'px, 0px)';
-        this._animationFrame = null;
-    }
-
-    panelMovedAnimatioFrameX() {
-        this._panelElementCombined.style.transform = 'translate3d(' + this._deltaX + 'px, 0px, 0px)';
-        this._animationFrame = null;
-    }
-    
-    panelReleased() {
-        this._panelContainer.removeEventListener('pointermove', this.panelMoved);
-        this._panelContainer.removeEventListener('pointerup', this.panelReleased);
-        this._panelContainer.removeEventListener('pointercancel', this.panelReleased);
-
-        if (!this._animationFrame) {
-            cancelAnimationFrame(this._animationFrame);
-            this._animationFrame = null;
+        if (this._movementDirection.moveOnY) {
+            dragParameters.dragItem.style.transform = 'translate3d(0px, ' + (dragParameters.moveEvent.clientY - dragParameters.initalMousePositionY) + 'px, 0px)';
         }
-        
-        this._panelElementCombined.classList.remove('drag');
-
-        if(document.body.clientWidth <= this._reponsiveMaxDeviceWidth) {
-            this._panelElementCombined.style.top = this._borderBox.top + this._deltaY + 'px';// border box must be added again after container is absolute
-            console.log(this._deltaY);
-        } else {
-            this._panelElementCombined.style.left = this._borderBox.left + this._deltaX + 'px';
+        if(this._movementDirection.moveOnX && this._movementDirection.moveOnY) {
+            dragParameters.dragItem.style.transform = 'translate3d(' + (dragParameters.moveEvent.clientX - dragParameters.initalMousePositionX) + 'px, ' + (dragParameters.moveEvent.clientY - dragParameters.initalMousePositionY) + 'px, 0px)';
         }
+    }
 
-        this._panelElementCombined.style.transform = 'translate3d(0px, 0px, 0px)';
-
-        this._deltaX = this._deltaY = null;
+    static removeDrag(dragItem, offsetTop, offsetLeft) {
+        console.log('loaded', offsetLeft + 'px');
+        this._container.onpointermove = null;
+        dragItem.classList.remove(this._dragStyleClass);
+        dragItem.style.left = offsetLeft + 'px';
+        dragItem.style.transform = 'translate3d(0px, 0px, 0px)';
+        // this._container.insertAdjacentElement('afterbegin', dragItem);
+        //callback function --> maybe inserted or passed as a parameter in the settings at the setUp
     }
 }
