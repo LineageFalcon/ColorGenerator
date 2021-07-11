@@ -45,30 +45,43 @@ class viewHandler { // viewModel
     }
 
     static checkOrientation() {
-        (document.body.clientWidth <= this._responsiveMaxDeviceWidth) ? this.calcHeight() : this.calcWidth();
+        const colorPanelNodeArray = document.getElementsByClassName('colorPanel');
+        
+        (document.body.clientWidth <= this._responsiveMaxDeviceWidth) ? this.calcHeight(colorPanelNodeArray) : this.calcWidth(colorPanelNodeArray);
     }
 
-    static calcHeight() {
+    static calcHeight(colorPanelNodeArray) {
         let coefficient = 0;
+
         dragAndDrop._movementDirection = {moveOnX: false, moveOnY: true};
-        for(let panel of this._colorPanelList) {
+        for(let panel of colorPanelNodeArray) {//needs to read in panels out of view
             coefficient += 100 / (this._colorPanelList.size);
-            panel._combinedColorPanel.style.height = 100 / (this._colorPanelList.size) + "%";
-            panel._combinedColorPanel.style.top = coefficient - 100 / (this._colorPanelList.size) + "%";
-            panel._combinedColorPanel.style.width = "100%";
-            panel._combinedColorPanel.style.left = 0;
+            panel.style.height = this.roundTo2Decimals(100 / (this._colorPanelList.size)) + "%";
+            panel.style.top = coefficient - 100 / (this._colorPanelList.size) + "%";
+            panel.style.width = "100%";
+            panel.style.left = 0;
         }
     }
 
-    static calcWidth() {
+    static calcWidth(colorPanelNodeArray) {
         let coefficient = 0;
+
         dragAndDrop._movementDirection = {moveOnX: true, moveOnY: false};
-        for(let panel of this._colorPanelList) {
+
+        for(let panel of colorPanelNodeArray) {//needs to read in panels out of view (works with for of loop!)
             coefficient += 100 / (this._colorPanelList.size);
-            panel._combinedColorPanel.style.width = 100 / (this._colorPanelList.size) + "%";
-            panel._combinedColorPanel.style.left = coefficient - 100 / (this._colorPanelList.size) + "%";
-            panel._combinedColorPanel.style.height = "100%";
-            panel._combinedColorPanel.style.top = 0;
+            panel.style.width = this.roundTo2Decimals(100 / (this._colorPanelList.size)) + "%";
+            panel.style.left = coefficient - 100 / (this._colorPanelList.size) + "%";
+            panel.style.height = "100%";
+            panel.style.top = 0;
         }
+    }
+
+    static roundTo2Decimals(value, exp = -1) {//small needed utility which can be stored in a seperated math library
+        value = value.toString().split('e');
+        value = Math.ceil(+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+        // Shift back
+        value = value.toString().split('e');
+        return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
     }
 }

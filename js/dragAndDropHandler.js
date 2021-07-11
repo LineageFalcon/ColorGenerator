@@ -1,11 +1,15 @@
 class dragAndDrop {
     constructor() {}
 
+//#region properties
     static _container;
     static _dragStyleClass;
     static _movementDirection;//object
     static _animationFrame;
+    static _dropCoordinateX;
+    static _dropCoordinateY;
     //static _callback;
+//#endregion properties
 
     static load(container, classString, /*callback*/) {
         this._container = container;
@@ -14,9 +18,9 @@ class dragAndDrop {
     }
 
     static drag(event, dragItem) {
-        const offsetTop = dragItem.offsetTop; 
-        const offsetLeft = dragItem.offsetLeft;
-        console.log(offsetLeft);
+        this._dropCoordinateY = dragItem.offsetTop; 
+        this._dropCoordinateX = dragItem.offsetLeft;
+
         this._container.onpointermove = (moveEvent) => {this.move({
             event: event,
             moveEvent: moveEvent,
@@ -24,8 +28,8 @@ class dragAndDrop {
             initalMousePositionX: event.clientX,
             initalMousePositionY: event.clientY
         })}
-        this._container.onpointerup = () => {this.removeDrag(dragItem, offsetTop, offsetLeft)}
-        this._container.onpointercancel = () => {this.removeDrag(dragItem, offsetTop, offsetLeft)}
+        this._container.onpointerup = () => {this.removeDrag(dragItem)}
+        this._container.onpointercancel = () => {this.removeDrag(dragItem)}
     }
 
     static move(dragParameters) {
@@ -41,15 +45,49 @@ class dragAndDrop {
         if(this._movementDirection.moveOnX && this._movementDirection.moveOnY) {
             dragParameters.dragItem.style.transform = 'translate3d(' + (dragParameters.moveEvent.clientX - dragParameters.initalMousePositionX) + 'px, ' + (dragParameters.moveEvent.clientY - dragParameters.initalMousePositionY) + 'px, 0px)';
         }
+
+        collisionDetection.checkForCollision(this._container, dragParameters);
+
+        // this.switchPositions();
+
     }
 
-    static removeDrag(dragItem, offsetTop, offsetLeft) {
-        console.log('loaded', offsetLeft + 'px');
+    static removeDrag(dragItem) {
         this._container.onpointermove = null;
         dragItem.classList.remove(this._dragStyleClass);
-        dragItem.style.left = offsetLeft + 'px';
+
+        if(this._movementDirection.moveOnX) {
+            dragItem.style.left = this._dropCoordinateX + 'px';
+        }
+        if (this._movementDirection.moveOnY) {
+            dragItem.style.top = this._dropCoordinateY + 'px';
+        }
+        if(this._movementDirection.moveOnX && this._movementDirection.moveOnY) {
+            dragItem.style.left = this._dropCoordinateX + 'px';
+            dragItem.style.top = this._dropCoordinateY + 'px';
+        }
+
         dragItem.style.transform = 'translate3d(0px, 0px, 0px)';
         // this._container.insertAdjacentElement('afterbegin', dragItem);
         //callback function --> maybe inserted or passed as a parameter in the settings at the setUp
+    }
+
+    static switchPositions() {
+
+    }
+}
+
+class collisionDetection {
+    constructor() {}
+
+    static checkForCollision(container, dragParameters) {
+        const collisionPanelArray = container.getElementsByClassName('colorPanel');
+        //check for all elements and deselect the drag element (.contains(class))
+        for (let collisionPanel of collisionPanelArray) {
+            if(!(collisionPanel === dragParameters.dragItem)) {
+                console.log(collisionPanel.offsetLeft < dragParameters.moveEvent.clientX && (collisionPanel.offsetLeft + collisionPanel.offsetWidth) > dragParameters.moveEvent.clientX);
+            }
+        }
+        // return console.log('collision');
     }
 }
