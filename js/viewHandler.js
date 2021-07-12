@@ -39,8 +39,8 @@ class viewHandler { // viewModel
     }
 
     static deletePanel(targetItem) {
-        targetItem._combinedColorPanel.remove();
         viewHandler._colorPanelList.delete(targetItem);
+        targetItem._combinedColorPanel.remove();
          this.checkOrientation();
     }
 
@@ -54,6 +54,7 @@ class viewHandler { // viewModel
         let coefficient = 0;
 
         dragAndDrop._movementDirection = {moveOnX: false, moveOnY: true};
+
         for(let panel of colorPanelNodeArray) {//needs to read in panels out of view
             coefficient += 100 / (this._colorPanelList.size);
             panel.style.height = this.roundTo2Decimals(100 / (this._colorPanelList.size)) + "%";
