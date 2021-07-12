@@ -33,7 +33,7 @@ class dragAndDrop {
     }
 
     static move(dragParameters) {
-        console.log('%cstill running!', 'color: green');
+        // console.log('%cstill running!', 'color: green');
         dragParameters.dragItem.classList.add(this._dragStyleClass);
 
         if(this._movementDirection.moveOnX) {
@@ -54,10 +54,13 @@ class dragAndDrop {
 
     static removeDrag(dragItem) {
         this._container.onpointermove = null;
+        this._container.onpointercancel = null;
+        this._container.onpointerup = null;
         dragItem.classList.remove(this._dragStyleClass);
 
         if(this._movementDirection.moveOnX) {
             dragItem.style.left = this._dropCoordinateX + 'px';
+            console.log(this._dropCoordinateX);
         }
         if (this._movementDirection.moveOnY) {
             dragItem.style.top = this._dropCoordinateY + 'px';
@@ -82,10 +85,13 @@ class collisionDetection {
 
     static checkForCollision(container, dragParameters) {
         const collisionPanelArray = container.getElementsByClassName('colorPanel');
-        //check for all elements and deselect the drag element (.contains(class))
         for (let collisionPanel of collisionPanelArray) {
             if(!(collisionPanel === dragParameters.dragItem)) {
-                console.log(collisionPanel.offsetLeft < dragParameters.moveEvent.clientX && (collisionPanel.offsetLeft + collisionPanel.offsetWidth) > dragParameters.moveEvent.clientX);
+                if(collisionPanel.offsetLeft < dragParameters.moveEvent.clientX && (collisionPanel.offsetLeft + collisionPanel.offsetWidth) > dragParameters.moveEvent.clientX) {
+                    let cPOffsetLeft = collisionPanel.offsetLeft; //does not belongs here!
+                    collisionPanel.style.left = dragAndDrop._dropCoordinateX + 'px';
+                    dragAndDrop._dropCoordinateX = cPOffsetLeft;
+                }
             }
         }
         // return console.log('collision');
