@@ -28,6 +28,9 @@ class eventHandler {
     static delegatePointerDownEvent(event) {
         console.log('%cPinged',  'color: red');
         const targetedObject = viewHandler.findTargetedPanel(event.target);
+
+        if (targetedObject === undefined || targetedObject === null) {return};
+        
         if(targetedObject.propertyClass === targetedObject.eventKeys[2] || targetedObject.propertyClass === targetedObject.eventKeys[6]) {
             console.log('dragItemChoosen');
             dragAndDrop.drag(event, targetedObject.colorPanel.CombinedColorPanel);
