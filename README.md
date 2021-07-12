@@ -39,4 +39,4 @@ In the best case you use this emojis to declare the topic of your commit.</br>
 - [x] change viewModel to work as much as possible with the logic instead with view (meant for less api calls because these cost a lot of ressources)
 - [ ] drag and drop of panel position
 - [ ] adjust all variable names to a name scheme
-- [ ] eliminate performance issues (never will be off the list =))
+- [ ] eliminate performance issues (never will be off the list =) )
