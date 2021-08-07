@@ -1,7 +1,7 @@
 class colorConvert {//some code lines are inspired and or euqal to those you can find on css-tricks: https://css-tricks.com/converting-color-spaces-in-javascript/
     constructor() {}
 
-    static ranColorGen(range) {
+    static newRandomColor(range) {
         const HEXCHARS = '0123456789ABCDEF';
         let ranColor = '#';
 
