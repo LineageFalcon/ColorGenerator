@@ -46,10 +46,9 @@ class dragAndDrop {
             dragParameters.dragItem.style.transform = 'translate3d(' + (dragParameters.moveEvent.clientX - dragParameters.initalMousePositionX) + 'px, ' + (dragParameters.moveEvent.clientY - dragParameters.initalMousePositionY) + 'px, 0px)';
         }
 
+        collisionDetection.checkForDirection(dragParameters);
         collisionDetection.checkForCollision(this._container, dragParameters);
-
-        // this.switchPositions();
-
+        
     }
 
     static removeDrag(dragItem) {
@@ -75,25 +74,60 @@ class dragAndDrop {
         //callback function --> maybe inserted or passed as a parameter in the settings at the setUp
     }
 
-    static switchPositions() {
+    static switchPositions(collisionPanel, dragItem) {
+        //switch panels onyl visually
+        let cPOffsetLeft = collisionPanel.offsetLeft;
+        collisionPanel.style.left = dragAndDrop._dropCoordinateX + 'px';
+        dragAndDrop._dropCoordinateX = cPOffsetLeft;
 
+        //switch panels in the DOM
+        if(collisionDetection._direction === 'right') {
+            collisionPanel.parentNode.insertBefore(collisionPanel, dragItem);
+        }
+        if(collisionDetection._direction === 'left') {
+            dragItem.parentNode.insertBefore(dragItem, collisionPanel);
+        }
     }
 }
 
 class collisionDetection {
     constructor() {}
 
+    static _direction = '';
+    static _orientationPointX = 0;
+    static _orientationPointY = 0;
+
     static checkForCollision(container, dragParameters) {
         const collisionPanelArray = container.getElementsByClassName('colorPanel');
         for (let collisionPanel of collisionPanelArray) {
             if(!(collisionPanel === dragParameters.dragItem)) {
                 if(collisionPanel.offsetLeft < dragParameters.moveEvent.clientX && (collisionPanel.offsetLeft + collisionPanel.offsetWidth) > dragParameters.moveEvent.clientX) {
-                    let cPOffsetLeft = collisionPanel.offsetLeft; //does not belongs here!
-                    collisionPanel.style.left = dragAndDrop._dropCoordinateX + 'px';
-                    dragAndDrop._dropCoordinateX = cPOffsetLeft;
+                    dragAndDrop.switchPositions(collisionPanel, dragParameters.dragItem);
+                    return collisionPanel;
                 }
             }
         }
-        // return console.log('collision');
+    }
+
+    static checkForDirection(dragParameters) {
+        if(dragAndDrop._movementDirection.moveOnX) {
+            if(collisionDetection._orientationPointX > dragParameters.moveEvent.pageX) {
+                collisionDetection._direction = 'left';
+            }
+            else if(collisionDetection._orientationPointX < dragParameters.moveEvent.pageX) {
+                collisionDetection._direction = 'right';
+            }
+            collisionDetection._orientationPointX = dragParameters.moveEvent.pageX;
+        }
+        if(dragAndDrop._movementDirection.moveOnY) {
+            if (collisionDetection._orientationPointY > dragParameters.moveEvent.pageY) {
+                collisionDetection._direction = 'left';
+            } 
+            else if(collisionDetection._orientationPointY < dragParameters.moveEvent.pageY) {
+                collisionDetection._direction = 'right';
+            }
+            collisionDetection._orientationPointY = dragParameters.moveEvent.pageY;
+        }
+        return collisionDetection._direction;
     }
 }
