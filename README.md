@@ -37,6 +37,6 @@ In the best case you use this emojis to declare the topic of your commit.</br>
 - [x] change the current view layout (UI) to a more responsive and base on UX one 
 - [x] finalize refac with structuring classes based on MVVM/ MVP/ MVC (in this case MVVM)
 - [x] change viewModel to work as much as possible with the logic instead with view (meant for less api calls because these cost a lot of ressources)
-- [ ] drag and drop of panel position
+- [x] drag and drop of panel position (in progress...)
 - [ ] adjust all variable names to a name scheme
 - [ ] eliminate performance issues (never will be off the list =) )
