@@ -1,22 +1,21 @@
----
+<!-- ---
 title: ColorGen
 date: "26.03.2021"
 language: English 
 description: ''
 creator: Malcom Cook
 contributor: Magnus Cook
-
----
+--- -->
 
 # ColorGenerator
 
 A small and fancy random color theme generator.
 
 ## Preview Desktop
-![Image of latest ColorGen](https://github.com/LineageFalcon/ColorGenerator/blob/code-refactoring-from-base/ColorGen_v1.2.7.png)
+![Image of latest ColorGen](https://github.com/LineageFalcon/ColorGenerator/blob/main/ColorGen_v1.3.png)
 
 ## Preview Mobile
-![Image of latest ColorGen Mobile](https://github.com/LineageFalcon/ColorGenerator/blob/code-refactoring-from-base/ColorGen_v1.2.7_Mobile.png)
+![Image of latest ColorGen Mobile](https://github.com/LineageFalcon/ColorGenerator/blob/main/ColorGen_v1.3_Mobile.png)
 
 ## How to commit
 
