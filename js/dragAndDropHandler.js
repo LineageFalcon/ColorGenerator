@@ -33,7 +33,6 @@ class dragAndDrop {
     }
 
     static move(dragParameters) {
-        // console.log('%cstill running!', 'color: green');
         dragParameters.dragItem.classList.add(this._dragStyleClass);
 
         if(this._movementDirection.moveOnX) {
@@ -48,7 +47,6 @@ class dragAndDrop {
 
         collisionDetection.checkForDirection(dragParameters);
         collisionDetection.checkForCollision(this._container, dragParameters);
-        
     }
 
     static removeDrag(dragItem) {
@@ -59,7 +57,6 @@ class dragAndDrop {
 
         if(this._movementDirection.moveOnX) {
             dragItem.style.left = this._dropCoordinateX + 'px';
-            console.log(this._dropCoordinateX);
         }
         if (this._movementDirection.moveOnY) {
             dragItem.style.top = this._dropCoordinateY + 'px';
@@ -75,7 +72,7 @@ class dragAndDrop {
     }
 
     static switchPositions(collisionPanel, dragItem) {
-        //switch panels onyl visually
+        //switch panels only visually
         let cPOffsetLeft = collisionPanel.offsetLeft;
         collisionPanel.style.left = dragAndDrop._dropCoordinateX + 'px';
         dragAndDrop._dropCoordinateX = cPOffsetLeft;
