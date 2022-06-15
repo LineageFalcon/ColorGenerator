@@ -7,6 +7,7 @@ class dragAndDrop {
     static _movementDirection;//object
     static _animationFrame;
     static _dropCoordinateX;
+    static _initalCoordinateX;
     static _dropCoordinateY;
     //static _callback;
 //#endregion properties
@@ -20,6 +21,7 @@ class dragAndDrop {
     static drag(event, dragItem) {
         this._dropCoordinateY = dragItem.offsetTop; 
         this._dropCoordinateX = dragItem.offsetLeft;
+        this._initalCoordinateX = dragItem.offsetLeft;
 
         this._container.onpointermove = (moveEvent) => {this.move({
             event: event,
@@ -32,12 +34,13 @@ class dragAndDrop {
         this._container.onpointercancel = () => {this.removeDrag(dragItem)}
     }
 
-    static move(dragParameters) {
+    static move(dragParameters) { //transoform is maybe obsolete
         // console.log('%cstill running!', 'color: green');
         dragParameters.dragItem.classList.add(this._dragStyleClass);
 
         if(this._movementDirection.moveOnX) {
-            dragParameters.dragItem.style.transform = 'translate3d(' + (dragParameters.moveEvent.clientX - dragParameters.initalMousePositionX) + 'px, 0px, 0px)';
+            // dragParameters.dragItem.style.transform = 'translate3d(' + (dragParameters.moveEvent.clientX - dragParameters.initalMousePositionX) + 'px, 0px, 0px)';
+            dragParameters.dragItem.style.left = dragParameters.moveEvent.clientX - dragParameters.initalMousePositionX + this._initalCoordinateX + 'px'
         }
         if (this._movementDirection.moveOnY) {
             dragParameters.dragItem.style.transform = 'translate3d(0px, ' + (dragParameters.moveEvent.clientY - dragParameters.initalMousePositionY) + 'px, 0px)';
@@ -59,7 +62,6 @@ class dragAndDrop {
 
         if(this._movementDirection.moveOnX) {
             dragItem.style.left = this._dropCoordinateX + 'px';
-            console.log(this._dropCoordinateX);
         }
         if (this._movementDirection.moveOnY) {
             dragItem.style.top = this._dropCoordinateY + 'px';
@@ -76,9 +78,9 @@ class dragAndDrop {
 
     static switchPositions(collisionPanel, dragItem) {
         //switch panels onyl visually
-        let cPOffsetLeft = collisionPanel.offsetLeft;
-        collisionPanel.style.left = dragAndDrop._dropCoordinateX + 'px';
-        dragAndDrop._dropCoordinateX = cPOffsetLeft;
+        let cpOffsetLeft = collisionPanel.offsetLeft;
+        collisionPanel.style.left = this._dropCoordinateX + 'px';
+        this._dropCoordinateX = cpOffsetLeft;
 
         //switch panels in the DOM
         if(collisionDetection._direction === 'right') {
