@@ -17,7 +17,7 @@ A small and fancy random color theme generator.
 ## Preview Mobile
 ![Image of latest ColorGen Mobile](https://github.com/LineageFalcon/ColorGenerator/blob/main/ColorGen_v1.3_Mobile.png)
 
-## How to commit
+### How to commit
 
 In the best case you use this emojis to declare the topic of your commit.</br>
 📝 : Edit</br>
@@ -26,7 +26,7 @@ In the best case you use this emojis to declare the topic of your commit.</br>
 ➕ : File added</br>
 🗑️ : File deleted</br>
 
-## What needs to be done
+### What needs to be done
 
 - [x] create function class for ColorConvertion
 - [x] make bind obj for light and dark mode
